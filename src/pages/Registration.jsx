@@ -5,8 +5,10 @@ import { FaLock, FaUser, FaEye, FaEyeSlash, FaEnvelope, FaPhone, FaArrowLeft, Fa
 import { signInWithGoogle } from '../services/firebase';
 import logo from '../assets/5309874850258165398_121.jpg';
 import Loader from '../components/Loader';
+import { useLanguage } from '../context/LanguageContext';
 
 function Registration() {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -50,7 +52,7 @@ function Registration() {
       // Перенаправляем в кабинет студента
       navigate('/student');
     } catch (err) {
-      setErrors({ general: 'Ошибка входа через Google: ' + err.message });
+      setErrors({ general: t('googleLoginError') + err.message });
       setGoogleLoading(false);
     }
   };
@@ -59,33 +61,33 @@ function Registration() {
     const newErrors = {};
 
     if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Введите полное имя';
+      newErrors.fullName = t('enterFullName');
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Введите email';
+      newErrors.email = t('enterEmail');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Неверный формат email';
+      newErrors.email = t('invalidEmail');
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = 'Введите номер телефона';
+      newErrors.phone = t('enterPhone');
     }
 
     if (!formData.username.trim()) {
-      newErrors.username = 'Введите имя пользователя';
+      newErrors.username = t('enterUsername');
     } else if (formData.username.length < 3) {
-      newErrors.username = 'Минимум 3 символа';
+      newErrors.username = t('usernameMin3');
     }
 
     if (!formData.password) {
-      newErrors.password = 'Введите пароль';
+      newErrors.password = t('enterPassword');
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Минимум 6 символов';
+      newErrors.password = t('passwordMin6');
     }
 
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Пароли не совпадают';
+      newErrors.confirmPassword = t('passwordsNotMatch');
     }
 
     setErrors(newErrors);
@@ -104,13 +106,13 @@ function Registration() {
     // Проверка на существующего пользователя
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     if (users.find(u => u.username === formData.username)) {
-      setErrors({ username: 'Пользователь уже существует' });
+      setErrors({ username: t('userExists') });
       setLoading(false);
       return;
     }
 
     if (users.find(u => u.email === formData.email)) {
-      setErrors({ email: 'Email уже зарегистрирован' });
+      setErrors({ email: t('emailExists') });
       setLoading(false);
       return;
     }
@@ -169,9 +171,9 @@ function Registration() {
           <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden">
             <img src={logo} alt="OKURMEN" className="w-full h-full object-cover" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-800">ОКУРМЭН</h1>
+          <h1 className="text-3xl font-bold text-gray-800">{t('loginTitle')}</h1>
           <p className="text-gray-600 mt-2">
-            Регистрация нового аккаунта
+            {t('registerSubtitle')}
           </p>
         </div>
 
@@ -192,24 +194,24 @@ function Registration() {
               <span>{googleLoading ? (
                 <span className="flex items-center space-x-2">
                   <Loader size="sm" />
-                  <span>Вход...</span>
+                  <span>{t('loggingIn')}</span>
                 </span>
               ) : (
-                'Продолжить с Google'
+                t('continueWithGoogle')
               )}</span>
             </motion.button>
 
             {/* Divider */}
             <div className="flex items-center mb-6">
               <div className="flex-1 border-t border-gray-300"></div>
-              <span className="px-4 text-sm text-gray-600">или</span>
+              <span className="px-4 text-sm text-gray-600">{t('or')}</span>
               <div className="flex-1 border-t border-gray-300"></div>
             </div>
 
             {/* Role Selection */}
             <div className="mb-6">
               <label className="block text-sm font-semibold text-gray-700 mb-3">
-                Выберите роль
+                {t('selectRole')}
               </label>
               <div className="grid grid-cols-2 gap-4">
                 <button
@@ -224,7 +226,7 @@ function Registration() {
                   <FaUserGraduate className={`text-3xl mx-auto mb-2 ${
                     formData.role === 'student' ? 'text-orange-600' : 'text-gray-400'
                   }`} />
-                  <div className="font-semibold text-sm">Студент</div>
+                  <div className="font-semibold text-sm">{t('student')}</div>
                 </button>
                 <button
                   type="button"
@@ -238,7 +240,7 @@ function Registration() {
                   <FaChalkboardTeacher className={`text-3xl mx-auto mb-2 ${
                     formData.role === 'teacher' ? 'text-orange-600' : 'text-gray-400'
                   }`} />
-                  <div className="font-semibold text-sm">Преподаватель</div>
+                  <div className="font-semibold text-sm">{t('teacher')}</div>
                 </button>
               </div>
             </div>
@@ -248,7 +250,7 @@ function Registration() {
               {/* Full Name */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Полное имя
+                  {t('fullName')}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -270,7 +272,7 @@ function Registration() {
               {/* Email */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Email
+                  {t('email')}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -292,7 +294,7 @@ function Registration() {
               {/* Phone */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Телефон
+                  {t('phone')}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -314,7 +316,7 @@ function Registration() {
               {/* Username */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Имя пользователя
+                  {t('username')}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -336,7 +338,7 @@ function Registration() {
               {/* Password */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Пароль
+                  {t('password')}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -369,7 +371,7 @@ function Registration() {
               {/* Confirm Password */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Подтвердите пароль
+                  {t('confirmPassword')}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -412,10 +414,10 @@ function Registration() {
                 {loading ? (
                   <span className="flex items-center justify-center space-x-2">
                     <Loader size="sm" />
-                    <span>Регистрация...</span>
+                    <span>{t('registering')}</span>
                   </span>
                 ) : (
-                  'Зарегистрироваться'
+                  t('registerButton')
                 )}
               </motion.button>
             </form>
@@ -423,9 +425,9 @@ function Registration() {
             {/* Link to Login */}
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                Уже есть аккаунт?{' '}
+                {t('haveAccount')}{' '}
                 <Link to="/login" className="text-orange-600 hover:text-orange-700 font-semibold">
-                  Войти
+                  {t('loginNow')}
                 </Link>
               </p>
             </div>
@@ -437,7 +439,7 @@ function Registration() {
                 className="inline-flex items-center text-sm text-gray-600 hover:text-gray-800"
               >
                 <FaArrowLeft className="mr-2" />
-                Вернуться на главную
+                {t('backToHome')}
               </Link>
             </div>
           </>
