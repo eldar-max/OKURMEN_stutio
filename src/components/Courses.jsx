@@ -6,8 +6,10 @@ import {
   FaMicrophone, FaRobot, FaClock, FaBook, FaDollarSign, FaGift 
 } from 'react-icons/fa';
 import BookingModal from './BookingModal';
+import { useLanguage } from '../context/LanguageContext';
 
 function Courses() {
+  const { t } = useLanguage();
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
