@@ -71,7 +71,7 @@ function Login() {
         }
       }
     } catch (err) {
-      setError('Ошибка входа через Google: ' + err.message);
+      setError(t('googleLoginError') + err.message);
       setGoogleLoading(false);
     }
   };
@@ -118,7 +118,7 @@ function Login() {
         navigate('/teacher');
       }
     } else {
-      setError('Неверное имя пользователя или пароль');
+      setError(t('invalidCredentials'));
       setLoading(false);
     }
   };
@@ -134,8 +134,8 @@ function Login() {
           <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden">
             <img src={logo} alt="OKURMEN" className="w-full h-full object-cover" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-800">ОКУРМЭН</h1>
-          <p className="text-gray-600 mt-2">Вход в личный кабинет</p>
+          <h1 className="text-3xl font-bold text-gray-800">{t('loginTitle')}</h1>
+          <p className="text-gray-600 mt-2">{t('loginSubtitle')}</p>
         </div>
 
         {/* Error Message */}
@@ -154,7 +154,7 @@ function Login() {
           {/* Username */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Имя пользователя
+              {t('usernameOrEmail')}
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -174,7 +174,7 @@ function Login() {
           {/* Password */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Пароль
+              {t('password')}
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -209,14 +209,14 @@ function Login() {
                 type="checkbox"
                 className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
               />
-              <span className="ml-2 text-sm text-gray-700">Запомнить меня</span>
+              <span className="ml-2 text-sm text-gray-700">{t('rememberMe')}</span>
             </label>
             <a 
               href="#" 
               onClick={(e) => { e.preventDefault(); setShowForgotPasswordModal(true); }}
               className="text-sm text-orange-600 hover:text-orange-700"
             >
-              Забыли пароль?
+              {t('forgotPassword')}
             </a>
           </div>
 
@@ -233,10 +233,10 @@ function Login() {
             {loading ? (
               <span className="flex items-center justify-center space-x-2">
                 <Loader size="sm" />
-                <span>Вход...</span>
+                <span>{t('loggingIn')}</span>
               </span>
             ) : (
-              'Войти'
+              t('loginButton')
             )}
           </motion.button>
         </form>
@@ -244,7 +244,7 @@ function Login() {
         {/* Divider */}
         <div className="flex items-center my-6">
           <div className="flex-1 border-t border-gray-300"></div>
-          <span className="px-4 text-sm text-gray-600">или</span>
+          <span className="px-4 text-sm text-gray-600">{t('or')}</span>
           <div className="flex-1 border-t border-gray-300"></div>
         </div>
 
@@ -263,19 +263,19 @@ function Login() {
           <span>{googleLoading ? (
             <span className="flex items-center space-x-2">
               <Loader size="sm" />
-              <span>Вход...</span>
+              <span>{t('loggingIn')}</span>
             </span>
           ) : (
-            'Войти через Google'
+            t('loginWithGoogle')
           )}</span>
         </motion.button>
 
         {/* Link to Registration */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Нет аккаунта?{' '}
+            {t('noAccount')}{' '}
             <Link to="/registration" className="text-orange-600 hover:text-orange-700 font-semibold">
-              Зарегистрироваться
+              {t('registerNow')}
             </Link>
           </p>
         </div>
@@ -287,7 +287,7 @@ function Login() {
             className="inline-flex items-center text-sm text-gray-600 hover:text-gray-800"
           >
             <FaArrowLeft className="mr-2" />
-            Вернуться на главную
+            {t('backToHome')}
           </Link>
         </div>
       </motion.div>
@@ -315,7 +315,7 @@ function Login() {
               className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full"
             >
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-2xl font-bold text-gray-800">Сброс пароля</h3>
+                <h3 className="text-2xl font-bold text-gray-800">{t('resetPassword')}</h3>
                 <button
                   onClick={() => {
                     setShowForgotPasswordModal(false);
@@ -340,9 +340,9 @@ function Login() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h4 className="text-xl font-semibold text-gray-800 mb-2">Письмо отправлено!</h4>
+                  <h4 className="text-xl font-semibold text-gray-800 mb-2">{t('emailSent')}</h4>
                   <p className="text-gray-600 mb-6">
-                    Проверьте вашу почту. Мы отправили инструкции для восстановления пароля.
+                    {t('checkEmail')}
                   </p>
                   <button
                     onClick={() => {
@@ -352,13 +352,13 @@ function Login() {
                     }}
                     className="w-full px-4 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg hover:shadow-lg transition-shadow"
                   >
-                    Закрыть
+                    {t('close')}
                   </button>
                 </motion.div>
               ) : (
                 <form onSubmit={handleForgotPassword}>
                   <p className="text-gray-600 mb-6">
-                    Введите email, который вы использовали при регистрации через Google. Мы отправим вам письмо для сброса пароля.
+                    {t('enterEmailForReset')}
                   </p>
 
                   {resetError && (
@@ -373,7 +373,7 @@ function Login() {
 
                   <div className="mb-6">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Email адрес
+                      {t('emailAddress')}
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -400,7 +400,7 @@ function Login() {
                       }}
                       className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                     >
-                      Отмена
+                      {t('cancel')}
                     </button>
                     <button
                       type="submit"
@@ -409,7 +409,7 @@ function Login() {
                         resetLoading ? 'opacity-50 cursor-not-allowed' : ''
                       }`}
                     >
-                      {resetLoading ? 'Отправка...' : 'Отправить'}
+                      {resetLoading ? t('sending') : t('send')}
                     </button>
                   </div>
                 </form>
