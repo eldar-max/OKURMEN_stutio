@@ -18,6 +18,29 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Скрыть полосы прокрутки */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Скрыть скроллбар для body и html */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+html,
+body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  overflow-x: hidden; /* Скрыть горизонтальный скролл */
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

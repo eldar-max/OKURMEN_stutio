@@ -1,7 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FaLock, FaUser, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useNavigate, Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaLock, FaUser, FaEye, FaEyeSlash, FaArrowLeft, FaGoogle, FaTimes, FaEnvelope } from 'react-icons/fa';
+import { signInWithGoogle, resetPassword } from '../services/firebase';
+import logo from '../assets/5309874850258165398_121.jpg';
+import Loader from '../components/Loader';
+import { generateAndSendAdminCode } from '../services/adminCode';
 
 function Login() {
   const navigate = useNavigate();
@@ -12,20 +16,105 @@ function Login() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  
+  // Forgot Password Modal
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetSuccess, setResetSuccess] = useState(false);
+  const [resetError, setResetError] = useState('');
+
+  const handleGoogleSignIn = async () => {
+    setError('');
+    setGoogleLoading(true);
+
+    try {
+      const { user, userData } = await signInWithGoogle();
+      
+      // Сохраняем данные в localStorage
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userRole', userData?.role || 'student');
+      localStorage.setItem('username', user.displayName || user.email);
+      localStorage.setItem('userId', user.uid);
+      localStorage.setItem('userFullName', user.displayName || '');
+      localStorage.setItem('userEmail', user.email);
+      localStorage.setItem('userPhoto', user.photoURL || '');
+
+      // Отправляем событие для обновления Navbar
+      window.dispatchEvent(new Event('authChange'));
+
+      // Проверяем админский email
+      const adminEmail = 'isabekoveldat@gmail.com';
+      
+      if (user.email === adminEmail) {
+        // Генерируем и отправляем код в Telegram (БЕЗ показа)
+        await generateAndSendAdminCode(
+          user.email, 
+          user.displayName || 'Администратор'
+        );
+        
+        // Сохраняем email для страницы подтверждения
+        localStorage.setItem('pendingAdminEmail', user.email);
+        
+        // Перенаправляем на страницу подтверждения
+        navigate('/admin-verification');
+      } else {
+        // Иначе перенаправляем в зависимости от роли
+        const role = userData?.role || 'student';
+        if (role === 'student') {
+          navigate('/student');
+        } else if (role === 'teacher') {
+          navigate('/teacher');
+        }
+      }
+    } catch (err) {
+      setError('Ошибка входа через Google: ' + err.message);
+      setGoogleLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    setResetError('');
+    setResetSuccess(false);
+    setResetLoading(true);
+
+    try {
+      await resetPassword(resetEmail);
+      setResetSuccess(true);
+      setResetEmail('');
+    } catch (err) {
+      setResetError(err.message);
+    } finally {
+      setResetLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    // Временная проверка (замените на реальный API)
-    if (formData.username === 'admin' && formData.password === 'admin123') {
+    // Проверка зарегистрированных пользователей
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find(u => u.username === formData.username && u.password === formData.password);
+
+    if (user) {
       localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('userRole', 'admin');
-      localStorage.setItem('username', formData.username);
-      setTimeout(() => {
-        navigate('/admin');
-      }, 500);
+      localStorage.setItem('userRole', user.role);
+      localStorage.setItem('username', user.username);
+      localStorage.setItem('userId', user.id);
+      localStorage.setItem('userFullName', user.fullName);
+      
+      // Отправляем событие для обновления Navbar
+      window.dispatchEvent(new Event('authChange'));
+      
+      if (user.role === 'student') {
+        navigate('/student');
+      } else if (user.role === 'teacher') {
+        navigate('/teacher');
+      }
     } else {
       setError('Неверное имя пользователя или пароль');
       setLoading(false);
@@ -33,19 +122,18 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md"
       >
-        {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-3xl">О</span>
+          <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden">
+            <img src={logo} alt="OKURMEN" className="w-full h-full object-cover" />
           </div>
           <h1 className="text-3xl font-bold text-gray-800">ОКУРМЭН</h1>
-          <p className="text-gray-600 mt-2">Админ панель</p>
+          <p className="text-gray-600 mt-2">Вход в личный кабинет</p>
         </div>
 
         {/* Error Message */}
@@ -74,8 +162,8 @@ function Login() {
                 type="text"
                 value={formData.username}
                 onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="admin"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                placeholder="username"
                 required
               />
             </div>
@@ -117,11 +205,15 @@ function Login() {
             <label className="flex items-center">
               <input
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
               />
               <span className="ml-2 text-sm text-gray-700">Запомнить меня</span>
             </label>
-            <a href="#" className="text-sm text-blue-600 hover:text-blue-700">
+            <a 
+              href="#" 
+              onClick={(e) => { e.preventDefault(); setShowForgotPasswordModal(true); }}
+              className="text-sm text-orange-600 hover:text-orange-700"
+            >
               Забыли пароль?
             </a>
           </div>
@@ -132,31 +224,198 @@ function Login() {
             disabled={loading}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className={`w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-shadow ${
+            className={`w-full py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-shadow ${
               loading ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >
-            {loading ? 'Вход...' : 'Войти'}
+            {loading ? (
+              <span className="flex items-center justify-center space-x-2">
+                <Loader size="sm" />
+                <span>Вход...</span>
+              </span>
+            ) : (
+              'Войти'
+            )}
           </motion.button>
         </form>
 
-        {/* Demo Credentials */}
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-          <p className="text-sm text-gray-600 text-center">
-            <strong>Demo:</strong> admin / admin123
+        {/* Divider */}
+        <div className="flex items-center my-6">
+          <div className="flex-1 border-t border-gray-300"></div>
+          <span className="px-4 text-sm text-gray-600">или</span>
+          <div className="flex-1 border-t border-gray-300"></div>
+        </div>
+
+        {/* Google Sign In */}
+        <motion.button
+          type="button"
+          onClick={handleGoogleSignIn}
+          disabled={googleLoading}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className={`w-full py-3 bg-white border-2 border-gray-300 text-gray-700 rounded-lg font-semibold shadow-md hover:shadow-lg transition-shadow flex items-center justify-center space-x-2 ${
+            googleLoading ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
+        >
+          <FaGoogle className="text-red-500 text-xl" />
+          <span>{googleLoading ? (
+            <span className="flex items-center space-x-2">
+              <Loader size="sm" />
+              <span>Вход...</span>
+            </span>
+          ) : (
+            'Войти через Google'
+          )}</span>
+        </motion.button>
+
+        {/* Link to Registration */}
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600">
+            Нет аккаунта?{' '}
+            <Link to="/registration" className="text-orange-600 hover:text-orange-700 font-semibold">
+              Зарегистрироваться
+            </Link>
           </p>
         </div>
 
         {/* Back to Home */}
-        <div className="mt-6 text-center">
-          <a
-            href="/"
-            className="text-sm text-gray-600 hover:text-gray-800"
+        <div className="mt-4 text-center">
+          <Link
+            to="/"
+            className="inline-flex items-center text-sm text-gray-600 hover:text-gray-800"
           >
-            ← Вернуться на главную
-          </a>
+            <FaArrowLeft className="mr-2" />
+            Вернуться на главную
+          </Link>
         </div>
       </motion.div>
+
+      {/* Forgot Password Modal */}
+      <AnimatePresence>
+        {showForgotPasswordModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+            onClick={() => {
+              setShowForgotPasswordModal(false);
+              setResetSuccess(false);
+              setResetError('');
+              setResetEmail('');
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-2xl font-bold text-gray-800">Сброс пароля</h3>
+                <button
+                  onClick={() => {
+                    setShowForgotPasswordModal(false);
+                    setResetSuccess(false);
+                    setResetError('');
+                    setResetEmail('');
+                  }}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <FaTimes className="text-2xl" />
+                </button>
+              </div>
+
+              {resetSuccess ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-center py-6"
+                >
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h4 className="text-xl font-semibold text-gray-800 mb-2">Письмо отправлено!</h4>
+                  <p className="text-gray-600 mb-6">
+                    Проверьте вашу почту. Мы отправили инструкции для восстановления пароля.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setShowForgotPasswordModal(false);
+                      setResetSuccess(false);
+                      setResetEmail('');
+                    }}
+                    className="w-full px-4 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg hover:shadow-lg transition-shadow"
+                  >
+                    Закрыть
+                  </button>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleForgotPassword}>
+                  <p className="text-gray-600 mb-6">
+                    Введите email, который вы использовали при регистрации через Google. Мы отправим вам письмо для сброса пароля.
+                  </p>
+
+                  {resetError && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4"
+                    >
+                      {resetError}
+                    </motion.div>
+                  )}
+
+                  <div className="mb-6">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Email адрес
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <FaEnvelope className="text-gray-400" />
+                      </div>
+                      <input
+                        type="email"
+                        value={resetEmail}
+                        onChange={(e) => setResetEmail(e.target.value)}
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                        placeholder="example@mail.com"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowForgotPasswordModal(false);
+                        setResetError('');
+                        setResetEmail('');
+                      }}
+                      className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      Отмена
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={resetLoading}
+                      className={`flex-1 px-4 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg hover:shadow-lg transition-shadow ${
+                        resetLoading ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                    >
+                      {resetLoading ? 'Отправка...' : 'Отправить'}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

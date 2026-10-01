@@ -2,8 +2,10 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useState } from 'react';
 import { FaQuoteLeft, FaStar, FaUser, FaUserTie } from 'react-icons/fa';
+import BookingModal from './BookingModal';
 
 function Testimonials() {
+  const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -73,7 +75,7 @@ function Testimonials() {
   const activeTestimonials = activeTab === 'students' ? studentTestimonials : parentTestimonials;
 
   return (
-    <section id="testimonials" className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+    <section id="testimonials" className="py-20 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900 dark:to-orange-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={ref}
@@ -83,7 +85,7 @@ function Testimonials() {
           className="text-center mb-12"
         >
           <h2 className="text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">
               Отзывы
             </span>
           </h2>
@@ -98,7 +100,7 @@ function Testimonials() {
             onClick={() => setActiveTab('students')}
             className={`px-8 py-3 rounded-full font-semibold transition-all flex items-center gap-2 ${
               activeTab === 'students'
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg'
                 : 'bg-white text-gray-700 hover:shadow-md'
             }`}
           >
@@ -109,7 +111,7 @@ function Testimonials() {
             onClick={() => setActiveTab('parents')}
             className={`px-8 py-3 rounded-full font-semibold transition-all flex items-center gap-2 ${
               activeTab === 'parents'
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg'
                 : 'bg-white text-gray-700 hover:shadow-md'
             }`}
           >
@@ -126,9 +128,9 @@ function Testimonials() {
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2 + index * 0.1 }}
-              className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+              className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all"
             >
-              <FaQuoteLeft className="text-4xl text-blue-200 mb-4" />
+              <FaQuoteLeft className="text-4xl text-orange-200 mb-4" />
               
               {/* Rating */}
               <div className="flex mb-4">
@@ -138,25 +140,25 @@ function Testimonials() {
               </div>
 
               {/* Text */}
-              <p className="text-gray-700 text-lg mb-6 leading-relaxed">
+              <p className="text-gray-700 dark:text-gray-300 text-lg mb-6 leading-relaxed">
                 "{testimonial.text}"
               </p>
 
               {/* Author Info */}
-              <div className="border-t border-gray-100 pt-4">
+              <div className="border-t border-gray-100 dark:border-gray-700 pt-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-bold text-gray-800">{testimonial.name}</h4>
+                    <h4 className="font-bold text-gray-800 dark:text-white">{testimonial.name}</h4>
                     {activeTab === 'students' ? (
                       <>
-                        <p className="text-blue-600 text-sm font-semibold">{testimonial.role}</p>
-                        <p className="text-gray-600 text-sm">{testimonial.company}</p>
-                        <p className="text-purple-600 text-xs mt-1">{testimonial.course}</p>
+                        <p className="text-orange-600 text-sm font-semibold">{testimonial.role}</p>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">{testimonial.company}</p>
+                        <p className="text-orange-600 text-xs mt-1">{testimonial.course}</p>
                       </>
                     ) : (
                       <>
-                        <p className="text-gray-600 text-sm">{testimonial.relation}</p>
-                        <p className="text-blue-600 text-sm">{testimonial.student}</p>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">{testimonial.relation}</p>
+                        <p className="text-orange-600 text-sm">{testimonial.student}</p>
                       </>
                     )}
                   </div>
@@ -173,18 +175,26 @@ function Testimonials() {
           transition={{ delay: 0.6 }}
           className="mt-16 text-center"
         >
-          <p className="text-2xl text-gray-700 mb-6">
+          <p className="text-2xl text-gray-700 dark:text-gray-300 mb-6">
             Присоединяйтесь к тысячам успешных студентов!
           </p>
           <motion.button
-            whileHover={{ scale: 1.05 }}
+            onClick={() => setBookingModalOpen(true)}
+            whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(249, 115, 22, 0.4)" }}
             whileTap={{ scale: 0.95 }}
-            className="px-12 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-shadow"
+            className="px-12 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-all relative overflow-hidden group"
           >
-            Записаться на курс
+            <span className="relative z-10">Записаться на курс</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
           </motion.button>
         </motion.div>
       </div>
+
+      {/* Booking Modal */}
+      <BookingModal 
+        isOpen={bookingModalOpen}
+        onClose={() => setBookingModalOpen(false)}
+      />
     </section>
   );
 }

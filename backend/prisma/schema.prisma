@@ -1,0 +1,487 @@
+// ============================================
+// OKURMEN Educational Platform - Prisma Schema
+// 15+ Models with Full Relations
+// ============================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+enum CourseStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+  COMPLETED
+}
+
+enum EnrollmentStatus {
+  PENDING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  SUSPENDED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+  BANK_TRANSFER
+  MOBILE_MONEY
+}
+
+enum AssignmentStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  SUBMITTED
+  GRADED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
+// ============================================
+// 1. USER - Пользователи системы
+// ============================================
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  username      String?   @unique
+  password      String?
+  name          String
+  phone         String?
+  role          Role      @default(STUDENT)
+  emailVerified Boolean   @default(false)
+  photoUrl      String?
+  firebaseUid   String?   @unique
+  bio           String?   @db.Text
+  dateOfBirth   DateTime?
+  address       String?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLoginAt   DateTime?
+  
+  // Relations
+  enrollments       Enrollment[]
+  payments          Payment[]
+  teacherCourses    Course[]          @relation("TeacherCourses")
+  assignments       Assignment[]
+  submissions       Submission[]
+  certificates      Certificate[]
+  attendances       Attendance[]
+  reviews           Review[]
+  notifications     Notification[]
+  messages          Message[]         @relation("MessageSender")
+  receivedMessages  Message[]         @relation("MessageReceiver")
+  achievements      UserAchievement[]
+  
+  @@map("users")
+}
+
+// ============================================
+// 2. COURSE - Курсы
+// ============================================
+model Course {
+  id            String        @id @default(cuid())
+  title         String
+  slug          String        @unique
+  description   String?       @db.Text
+  shortDesc     String?
+  thumbnail     String?
+  coverImage    String?
+  
+  category      String
+  level         String        @default("Beginner") // Beginner, Intermediate, Advanced
+  language      String        @default("Кыргызча")
+  
+  duration      String
+  totalHours    Int?
+  price         Decimal       @db.Decimal(10, 2)
+  currency      String        @default("KGS")
+  
+  teacherId     String?
+  teacher       User?         @relation("TeacherCourses", fields: [teacherId], references: [id])
+  
+  status        CourseStatus  @default(DRAFT)
+  isPublished   Boolean       @default(false)
+  isFeatured    Boolean       @default(false)
+  
+  maxStudents   Int?
+  
+  startDate     DateTime?
+  endDate       DateTime?
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  // Relations
+  enrollments   Enrollment[]
+  modules       Module[]
+  lessons       Lesson[]
+  assignments   Assignment[]
+  reviews       Review[]
+  
+  @@map("courses")
+}
+
+// ============================================
+// 3. MODULE - Модули курса
+// ============================================
+model Module {
+  id          String    @id @default(cuid())
+  courseId    String
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  title       String
+  description String?   @db.Text
+  order       Int
+  duration    String?
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  lessons     Lesson[]
+  
+  @@map("modules")
+}
+
+// ============================================
+// 4. LESSON - Уроки
+// ============================================
+model Lesson {
+  id          String    @id @default(cuid())
+  courseId    String
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  moduleId    String?
+  module      Module?   @relation(fields: [moduleId], references: [id], onDelete: SetNull)
+  
+  title       String
+  content     String?   @db.Text
+  videoUrl    String?
+  duration    Int?      // в минутах
+  order       Int
+  
+  isFree      Boolean   @default(false)
+  isPublished Boolean   @default(true)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  materials   Material[]
+  
+  @@map("lessons")
+}
+
+// ============================================
+// 5. MATERIAL - Учебные материалы
+// ============================================
+model Material {
+  id          String    @id @default(cuid())
+  lessonId    String
+  lesson      Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  
+  title       String
+  type        String    // pdf, video, link, document
+  url         String
+  size        Int?      // размер в байтах
+  
+  createdAt   DateTime  @default(now())
+  
+  @@map("materials")
+}
+
+// ============================================
+// 6. ENROLLMENT - Записи студентов
+// ============================================
+model Enrollment {
+  id              String            @id @default(cuid())
+  userId          String
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  courseId        String
+  course          Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  status          EnrollmentStatus  @default(PENDING)
+  progress        Int               @default(0)  // 0-100%
+  
+  enrolledAt      DateTime          @default(now())
+  startDate       DateTime?
+  completedAt     DateTime?
+  
+  lastAccessedAt  DateTime?
+  
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  
+  @@unique([userId, courseId])
+  @@map("enrollments")
+}
+
+// ============================================
+// 7. BOOKING - Заявки на курсы
+// ============================================
+model Booking {
+  id          String    @id @default(cuid())
+  name        String
+  email       String
+  phone       String
+  course      String
+  
+  startDate   DateTime?
+  format      String    @default("hybrid") // hybrid, offline, online
+  comment     String?   @db.Text
+  
+  status      String    @default("pending") // pending, confirmed, cancelled, completed
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@map("bookings")
+}
+
+// ============================================
+// 8. PAYMENT - Платежи
+// ============================================
+model Payment {
+  id              String        @id @default(cuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  amount          Decimal       @db.Decimal(10, 2)
+  currency        String        @default("KGS")
+  
+  method          PaymentMethod
+  status          PaymentStatus @default(PENDING)
+  
+  transactionId   String?       @unique
+  paymentGateway  String?       // elsom, mbank, paybox
+  
+  description     String?
+  metadata        Json?
+  
+  paidAt          DateTime?
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  @@map("payments")
+}
+
+// ============================================
+// 9. ASSIGNMENT - Задания
+// ============================================
+model Assignment {
+  id          String    @id @default(cuid())
+  courseId    String
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  teacherId   String
+  teacher     User      @relation(fields: [teacherId], references: [id])
+  
+  title       String
+  description String    @db.Text
+  dueDate     DateTime
+  maxScore    Int       @default(100)
+  
+  fileUrl     String?
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  submissions Submission[]
+  
+  @@map("assignments")
+}
+
+// ============================================
+// 10. SUBMISSION - Сдача заданий
+// ============================================
+model Submission {
+  id            String            @id @default(cuid())
+  assignmentId  String
+  assignment    Assignment        @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  
+  studentId     String
+  student       User              @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  
+  content       String?           @db.Text
+  fileUrl       String?
+  
+  status        AssignmentStatus  @default(SUBMITTED)
+  score         Int?
+  feedback      String?           @db.Text
+  
+  submittedAt   DateTime          @default(now())
+  gradedAt      DateTime?
+  
+  @@unique([assignmentId, studentId])
+  @@map("submissions")
+}
+
+// ============================================
+// 11. ATTENDANCE - Посещаемость
+// ============================================
+model Attendance {
+  id          String            @id @default(cuid())
+  userId      String
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  date        DateTime          @default(now())
+  status      AttendanceStatus
+  notes       String?
+  
+  createdAt   DateTime          @default(now())
+  
+  @@map("attendances")
+}
+
+// ============================================
+// 12. REVIEW - Отзывы о курсах
+// ============================================
+model Review {
+  id          String    @id @default(cuid())
+  courseId    String
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  rating      Int       // 1-5
+  comment     String?   @db.Text
+  
+  isApproved  Boolean   @default(false)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@unique([courseId, userId])
+  @@map("reviews")
+}
+
+// ============================================
+// 13. CERTIFICATE - Сертификаты
+// ============================================
+model Certificate {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  title         String
+  description   String?
+  courseTitle   String
+  
+  certificateNo String    @unique
+  fileUrl       String?
+  
+  issuedAt      DateTime  @default(now())
+  expiresAt     DateTime?
+  
+  @@map("certificates")
+}
+
+// ============================================
+// 14. NOTIFICATION - Уведомления
+// ============================================
+model Notification {
+  id          String    @id @default(cuid())
+  userId      String?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  title       String
+  message     String    @db.Text
+  type        String    // info, success, warning, error
+  
+  isRead      Boolean   @default(false)
+  link        String?
+  
+  createdAt   DateTime  @default(now())
+  
+  @@map("notifications")
+}
+
+// ============================================
+// 15. MESSAGE - Сообщения (чат)
+// ============================================
+model Message {
+  id          String    @id @default(cuid())
+  senderId    String
+  sender      User      @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  
+  receiverId  String
+  receiver    User      @relation("MessageReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  
+  subject     String?
+  content     String    @db.Text
+  
+  isRead      Boolean   @default(false)
+  readAt      DateTime?
+  
+  createdAt   DateTime  @default(now())
+  
+  @@map("messages")
+}
+
+// ============================================
+// 16. ACHIEVEMENT - Достижения
+// ============================================
+model Achievement {
+  id          String            @id @default(cuid())
+  name        String
+  description String
+  icon        String?
+  points      Int               @default(0)
+  
+  createdAt   DateTime          @default(now())
+  
+  // Relations
+  users       UserAchievement[]
+  
+  @@map("achievements")
+}
+
+// ============================================
+// 17. USER_ACHIEVEMENT - Достижения пользователей
+// ============================================
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  achievementId String
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  
+  earnedAt      DateTime    @default(now())
+  
+  @@unique([userId, achievementId])
+  @@map("user_achievements")
+}

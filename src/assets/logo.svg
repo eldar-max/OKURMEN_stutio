@@ -1,0 +1,29 @@
+<svg width="160" height="120" viewBox="0 0 160 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Left Lens with glow -->
+  <defs>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF8C00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF4500;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Left Lens (этот будет подмигивать) -->
+  <rect id="leftEye" x="20" y="50" width="50" height="25" rx="8" stroke="url(#orangeGrad)" stroke-width="4" fill="none" filter="url(#glow)"/>
+  <!-- Left Temple -->
+  <path d="M 20 62 L 10 35 C 8 30 12 28 15 30" stroke="url(#orangeGrad)" stroke-width="4" fill="url(#orangeGrad)" stroke-linecap="round" filter="url(#glow)"/>
+  
+  <!-- Right Lens -->
+  <rect id="rightEye" x="90" y="50" width="50" height="25" rx="8" stroke="url(#orangeGrad)" stroke-width="4" fill="none" filter="url(#glow)"/>
+  <!-- Right Temple -->
+  <path d="M 140 62 L 150 35 C 152 30 148 28 145 30" stroke="url(#orangeGrad)" stroke-width="4" fill="url(#orangeGrad)" stroke-linecap="round" filter="url(#glow)"/>
+  
+  <!-- Bridge -->
+  <line x1="70" y1="62" x2="90" y2="62" stroke="url(#orangeGrad)" stroke-width="4" stroke-linecap="round" filter="url(#glow)"/>
+</svg>

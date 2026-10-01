@@ -55,30 +55,6 @@ function Courses() {
       features: ['Node.js/Python', 'Database Design', 'REST API', 'Микросервисы'],
     },
     {
-      id: 3,
-      category: 'it',
-      title: 'UX/UI Design',
-      description: 'Figma, Adobe XD, Design Theory',
-      duration: '4 месяца',
-      format: 'Гибрид',
-      price: 'от 4000 сом/мес',
-      icon: FaPaintBrush,
-      color: 'from-pink-500 to-rose-500',
-      features: ['Figma Pro', 'User Research', 'Prototyping', 'Portfolio'],
-    },
-    {
-      id: 4,
-      category: 'language',
-      title: 'Англис тили',
-      description: 'Beginner to Advanced',
-      duration: 'Flexible',
-      format: 'Офлайн группы',
-      price: 'Бонус',
-      icon: FaLanguage,
-      color: 'from-green-500 to-emerald-500',
-      features: ['Speaking Club', 'Grammar', 'Business English', 'IELTS prep'],
-    },
-    {
       id: 5,
       category: 'skills',
       title: 'Оратордук чеберчилик',
@@ -109,21 +85,21 @@ function Courses() {
     : courses.filter(course => course.category === selectedCategory);
 
   return (
-    <section id="courses" className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+    <section id="courses" className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900 dark:to-orange-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-12"
         >
-          <h2 className="text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
+            <span className="bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">
               Наши курсы
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto px-4">
             Выберите свой путь к успеху. Все курсы с гибридным форматом обучения
           </p>
         </motion.div>
@@ -133,15 +109,15 @@ function Courses() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="flex flex-wrap justify-center gap-4 mb-12"
+          className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mb-8 sm:mb-12"
         >
           {categories.map((category) => (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`px-6 py-3 rounded-full font-semibold transition-all ${
+              className={`px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-full font-semibold text-sm sm:text-base transition-all ${
                 selectedCategory === category.id
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg scale-105'
+                  ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg scale-105'
                   : 'bg-white text-gray-700 hover:shadow-md'
               }`}
             >
@@ -151,7 +127,7 @@ function Courses() {
         </motion.div>
 
         {/* Courses Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {filteredCourses.map((course, index) => (
             <motion.div
               key={course.id}
@@ -159,41 +135,41 @@ function Courses() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3 + index * 0.1, duration: 0.6 }}
               whileHover={{ y: -10 }}
-              className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all overflow-hidden"
+              className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-lg hover:shadow-2xl transition-all overflow-hidden"
             >
               {/* Header with gradient */}
-              <div className={`h-32 bg-gradient-to-r ${course.color} flex items-center justify-center`}>
-                <course.icon className="text-7xl text-white" />
+              <div className={`h-24 sm:h-28 md:h-32 bg-gradient-to-r ${course.color} flex items-center justify-center`}>
+                <course.icon className="text-5xl sm:text-6xl md:text-7xl text-white" />
               </div>
 
-              <div className="p-6">
-                <h3 className="text-2xl font-bold mb-2 text-gray-800">
+              <div className="p-4 sm:p-5 md:p-6">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 text-gray-800 dark:text-white">
                   {course.title}
                 </h3>
-                <p className="text-gray-600 mb-4">{course.description}</p>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-3 sm:mb-4">{course.description}</p>
 
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <FaClock className="mr-2" />
+                <div className="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4">
+                  <div className="flex items-center text-xs sm:text-sm text-gray-600">
+                    <FaClock className="mr-2 flex-shrink-0" />
                     <span>{course.duration}</span>
                   </div>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <FaBook className="mr-2" />
+                  <div className="flex items-center text-xs sm:text-sm text-gray-600">
+                    <FaBook className="mr-2 flex-shrink-0" />
                     <span>{course.format}</span>
                   </div>
-                  <div className="flex items-center text-sm font-semibold text-blue-600">
-                    <FaDollarSign className="mr-2" />
+                  <div className="flex items-center text-xs sm:text-sm font-semibold text-blue-600">
+                    <FaDollarSign className="mr-2 flex-shrink-0" />
                     <span>{course.price}</span>
                   </div>
                 </div>
 
                 {/* Features */}
-                <div className="border-t border-gray-100 pt-4 mb-4">
-                  <ul className="space-y-2">
+                <div className="border-t border-gray-100 pt-3 sm:pt-4 mb-3 sm:mb-4">
+                  <ul className="space-y-1.5 sm:space-y-2">
                     {course.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center text-sm text-gray-700">
-                        <span className="text-green-500 mr-2">✓</span>
-                        {feature}
+                      <li key={idx} className="flex items-center text-xs sm:text-sm text-gray-700">
+                        <span className="text-green-500 mr-2 flex-shrink-0">✓</span>
+                        <span className="line-clamp-1">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -203,7 +179,7 @@ function Courses() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleBooking(course.id)}
-                  className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-semibold shadow-md hover:shadow-lg transition-shadow"
+                  className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full font-semibold text-sm sm:text-base shadow-md hover:shadow-lg transition-shadow"
                 >
                   Записаться
                 </motion.button>
@@ -217,32 +193,28 @@ function Courses() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.8, duration: 0.8 }}
-          className="mt-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-8 text-white text-center"
+          className="mt-12 sm:mt-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white text-center"
         >
-          <FaGift className="text-6xl mx-auto mb-4" />
-          <h3 className="text-3xl font-bold mb-4">Бонус сабактар</h3>
-          <p className="text-xl mb-6">
+          <FaGift className="text-4xl sm:text-5xl md:text-6xl mx-auto mb-3 sm:mb-4" />
+          <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Бонус сабактар</h3>
+          <p className="text-base sm:text-lg md:text-xl mb-4 sm:mb-6 px-2">
             IT курстарга жазылган окуучулар бонус катары төмөнкү сабактарды АКЫСЫЗ алышат:
           </p>
-          <div className="grid md:grid-cols-5 gap-4 text-sm">
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
-              <FaLaptopCode className="text-3xl mb-2 mx-auto" />
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 text-xs sm:text-sm">
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 sm:p-4">
+              <FaLaptopCode className="text-2xl sm:text-3xl mb-2 mx-auto" />
               <div className="font-semibold">Компьютердик сабаттуулук</div>
             </div>
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
-              <FaLanguage className="text-3xl mb-2 mx-auto" />
-              <div className="font-semibold">Англис тили</div>
-            </div>
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
-              <FaMicrophone className="text-3xl mb-2 mx-auto" />
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 sm:p-4">
+              <FaMicrophone className="text-2xl sm:text-3xl mb-2 mx-auto" />
               <div className="font-semibold">Оратордук чеберчилик</div>
             </div>
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
-              <FaRobot className="text-3xl mb-2 mx-auto" />
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 sm:p-4">
+              <FaRobot className="text-2xl sm:text-3xl mb-2 mx-auto" />
               <div className="font-semibold">Жасалма интеллект</div>
             </div>
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
-              <FaBook className="text-3xl mb-2 mx-auto" />
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 sm:p-4">
+              <FaBook className="text-2xl sm:text-3xl mb-2 mx-auto" />
               <div className="font-semibold">Гапыр агай АЭМ</div>
             </div>
           </div>

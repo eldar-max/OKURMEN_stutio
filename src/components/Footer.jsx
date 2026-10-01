@@ -3,14 +3,15 @@ import {
   FaFacebook, FaInstagram, FaYoutube, FaTelegram, FaWhatsapp,
   FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock 
 } from 'react-icons/fa';
+import logo from '../assets/5309874850258165398_121.jpg';
 
 function Footer() {
   const socialLinks = [
-    { icon: FaFacebook, url: '#', label: 'Facebook', color: 'hover:text-blue-600' },
-    { icon: FaInstagram, url: '#', label: 'Instagram', color: 'hover:text-pink-600' },
-    { icon: FaYoutube, url: '#', label: 'YouTube', color: 'hover:text-red-600' },
-    { icon: FaTelegram, url: '#', label: 'Telegram', color: 'hover:text-blue-500' },
-    { icon: FaWhatsapp, url: '#', label: 'WhatsApp', color: 'hover:text-green-600' },
+    { icon: FaFacebook, url: 'https://www.facebook.com/it.stuio', label: 'Facebook', color: 'hover:text-blue-600' },
+    { icon: FaInstagram, url: 'https://www.instagram.com/okurmen_studio/', label: 'Instagram', color: 'hover:text-pink-600' },
+    { icon: FaYoutube, url: 'https://www.youtube.com/@Okurmen_edu', label: 'YouTube', color: 'hover:text-red-600' },
+    { icon: FaTelegram, url: 'https://t.me/OKURKIDSBOT', label: 'Telegram', color: 'hover:text-blue-500' },
+    { icon: FaWhatsapp, url: 'https://wa.me/996702038656', label: 'WhatsApp', color: 'hover:text-green-600' },
   ];
 
   const quickLinks = [
@@ -25,43 +26,44 @@ function Footer() {
     { name: 'Frontend Development', href: '#courses' },
     { name: 'Backend Development', href: '#courses' },
     { name: 'UX/UI Design', href: '#courses' },
-    { name: 'Англис тили', href: '#courses' },
     { name: 'Оратордук', href: '#courses' },
   ];
 
   return (
-    <footer id="contact" className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white pt-20 pb-10">
+    <footer id="contact" className="bg-gradient-to-br from-orange-900 via-orange-800 to-orange-900 dark:from-orange-950 dark:via-orange-900 dark:to-orange-950 text-white pt-12 sm:pt-16 md:pt-20 pb-6 sm:pb-8 md:pb-10 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12 mb-8 sm:mb-10 md:mb-12">
           {/* Company Info */}
-          <div>
+          <div className="sm:col-span-2 lg:col-span-1">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              className="mb-6"
+              className="mb-4 sm:mb-6"
             >
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">О</span>
+              <div className="flex items-center space-x-3 mb-3 sm:mb-4">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden bg-black flex items-center justify-center shadow-lg">
+                  <img src={logo} alt="OKURMEN" className="w-full h-full object-cover" />
                 </div>
-                <span className="text-2xl font-bold">ОКУРМЭН</span>
+                <span className="text-xl sm:text-2xl font-bold">ОКУРМЭН</span>
               </div>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
                 Билимден мүмкүнчүлүккө карай. Заманбап технологияларды үйрөнүп, келечегиңди түз!
               </p>
             </motion.div>
 
             {/* Social Links */}
-            <div className="flex space-x-4">
+            <div className="flex space-x-3 sm:space-x-4">
               {socialLinks.map((social, index) => (
                 <motion.a
                   key={index}
                   href={social.url}
+                  target={social.url !== '#' ? '_blank' : '_self'}
+                  rel={social.url !== '#' ? 'noopener noreferrer' : ''}
                   whileHover={{ scale: 1.2, y: -5 }}
-                  className={`text-gray-400 ${social.color} transition-colors`}
+                  className={`text-gray-400 ${social.color} transition-colors text-orange-500 hover:text-orange-600`}
                   aria-label={social.label}
                 >
-                  <social.icon className="text-2xl" />
+                  <social.icon className="text-xl sm:text-2xl" />
                 </motion.a>
               ))}
             </div>
@@ -69,13 +71,13 @@ function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xl font-bold mb-6">Быстрые ссылки</h3>
-            <ul className="space-y-3">
+            <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Быстрые ссылки</h3>
+            <ul className="space-y-2 sm:space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
                   <a
                     href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors hover:translate-x-2 inline-block"
+                    className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors hover:translate-x-2 inline-block"
                   >
                     {link.name}
                   </a>
@@ -86,13 +88,13 @@ function Footer() {
 
           {/* Courses */}
           <div>
-            <h3 className="text-xl font-bold mb-6">Курсы</h3>
-            <ul className="space-y-3">
+            <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Курсы</h3>
+            <ul className="space-y-2 sm:space-y-3">
               {courses.map((course, index) => (
                 <li key={index}>
                   <a
                     href={course.href}
-                    className="text-gray-400 hover:text-white transition-colors hover:translate-x-2 inline-block"
+                    className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors hover:translate-x-2 inline-block"
                   >
                     {course.name}
                   </a>
@@ -103,38 +105,38 @@ function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-xl font-bold mb-6">Контакты</h3>
-            <ul className="space-y-4">
+            <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Контакты</h3>
+            <ul className="space-y-3 sm:space-y-4">
               <li className="flex items-start space-x-3">
-                <FaMapMarkerAlt className="text-blue-500 mt-1 flex-shrink-0" />
+                <FaMapMarkerAlt className="text-blue-500 mt-1 flex-shrink-0 text-sm sm:text-base" />
                 <div>
-                  <p className="text-gray-400">г. Бишкек, Кыргызстан</p>
-                  <p className="text-sm text-gray-500">Наш адрес</p>
+                  <p className="text-sm sm:text-base text-gray-400">г. Бишкек, Кыргызстан</p>
+                  <p className="text-xs sm:text-sm text-gray-500">Наш адрес</p>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
-                <FaPhone className="text-green-500 mt-1 flex-shrink-0" />
+                <FaPhone className="text-green-500 mt-1 flex-shrink-0 text-sm sm:text-base" />
                 <div>
-                  <a href="tel:+996" className="text-gray-400 hover:text-white">
+                  <a href="tel:+996" className="text-sm sm:text-base text-gray-400 hover:text-white">
                     +996 XXX XXX XXX
                   </a>
-                  <p className="text-sm text-gray-500">Позвоните нам</p>
+                  <p className="text-xs sm:text-sm text-gray-500">Позвоните нам</p>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
-                <FaEnvelope className="text-red-500 mt-1 flex-shrink-0" />
+                <FaEnvelope className="text-red-500 mt-1 flex-shrink-0 text-sm sm:text-base" />
                 <div>
-                  <a href="mailto:info@okurmen.kg" className="text-gray-400 hover:text-white">
+                  <a href="mailto:info@okurmen.kg" className="text-sm sm:text-base text-gray-400 hover:text-white break-all">
                     info@okurmen.kg
                   </a>
-                  <p className="text-sm text-gray-500">Напишите нам</p>
+                  <p className="text-xs sm:text-sm text-gray-500">Напишите нам</p>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
-                <FaClock className="text-yellow-500 mt-1 flex-shrink-0" />
+                <FaClock className="text-yellow-500 mt-1 flex-shrink-0 text-sm sm:text-base" />
                 <div>
-                  <p className="text-gray-400">Пн-Пт: 9:00 - 18:00</p>
-                  <p className="text-sm text-gray-500">Время работы</p>
+                  <p className="text-sm sm:text-base text-gray-400">Пн-Пт: 9:00 - 18:00</p>
+                  <p className="text-xs sm:text-sm text-gray-500">Время работы</p>
                 </div>
               </li>
             </ul>
@@ -142,12 +144,12 @@ function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-700 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm mb-4 md:mb-0">
+        <div className="border-t border-gray-700 pt-6 sm:pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p className="text-gray-400 text-xs sm:text-sm text-center md:text-left">
               © 2024 ОКУРМЭН. Все права защищены.
             </p>
-            <div className="flex space-x-6 text-sm text-gray-400">
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 text-xs sm:text-sm text-gray-400 text-center">
               <a href="#" className="hover:text-white transition-colors">
                 Политика конфиденциальности
               </a>
@@ -157,8 +159,8 @@ function Footer() {
             </div>
           </div>
 
-          <div className="mt-6 text-center">
-            <p className="text-gray-500 text-sm">
+          <div className="mt-4 sm:mt-6 text-center">
+            <p className="text-gray-500 text-xs sm:text-sm px-4">
               Основано в 2022 году • Санжарбек Мадумар & Улукбек Бакыбек уулу
             </p>
           </div>
