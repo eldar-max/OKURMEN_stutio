@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import AboutUs from '../components/AboutUs';
 import WhyUs from '../components/WhyUs';
+import Features from '../components/Features';
 import TechStack from '../components/TechStack';
 import Courses from '../components/Courses';
 import Team from '../components/Team';
@@ -21,6 +22,7 @@ function LandingPage() {
       <Hero />
       <AboutUs />
       <WhyUs />
+      <Features />
       <TechStack />
       <Courses />
       <Team />
