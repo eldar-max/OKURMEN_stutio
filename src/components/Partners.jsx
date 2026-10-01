@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
-import { FaTrophy, FaHandshake, FaMedal, FaAward } from 'react-icons/fa';
+import { FaTrophy, FaHandshake, FaMedal, FaAward, FaHandPaper } from 'react-icons/fa';
 
 function Partners() {
   const { language } = useLanguage();
@@ -80,10 +80,11 @@ function Partners() {
             transition={{ duration: 0.5 }}
             className="inline-block mb-4"
           >
-            <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-2 rounded-full text-sm font-semibold">
-              {language === 'kg' ? '🏆 Жетишкендиктер' : 
-               language === 'en' ? '🏆 Achievements' : 
-               '🏆 Достижения'}
+            <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
+              <FaHandPaper className="text-lg" />
+              {language === 'kg' ? 'Биздин өнөктөштөр' : 
+               language === 'en' ? 'Our Partners' : 
+               'Наши партнёры'}
             </div>
           </motion.div>
           
