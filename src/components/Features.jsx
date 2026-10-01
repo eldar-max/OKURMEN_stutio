@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { 
   FaLightbulb, 
-  FaDragDrop, 
+  FaHandPointer, 
   FaCode, 
   FaMobileAlt,
   FaRocket,
@@ -27,7 +27,7 @@ function Features() {
       bgGradient: 'from-blue-500 to-blue-600'
     },
     {
-      icon: FaDragDrop,
+      icon: FaHandPointer,
       titleKg: 'Оңой жана ыңгайлуу',
       titleRu: 'Легко и удобно',
       titleEn: 'Easy Drag-n-Drop',
