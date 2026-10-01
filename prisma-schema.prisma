@@ -1,0 +1,377 @@
+// Prisma Schema for OKURMEN Platform
+// Note: This is a reference schema. We are currently using Firebase.
+// Use this if migrating to PostgreSQL/MySQL in the future.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // or "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USERS & AUTHENTICATION
+// ============================================
+
+enum UserRole {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
+
+model User {
+  id            String        @id @default(cuid())
+  email         String        @unique
+  displayName   String
+  photoURL      String?
+  role          UserRole      @default(STUDENT)
+  phone         String?
+  dateOfBirth   String?
+  address       String?
+  status        UserStatus    @default(ACTIVE)
+  createdAt     DateTime      @default(now())
+  lastActive    DateTime      @default(now())
+  
+  // Relations
+  enrollments   Enrollment[]
+  payments      Payment[]
+  bookings      Booking[]
+  testimonials  Testimonial[]
+  taughtCourses Course[]      @relation("TeacherCourses")
+  
+  @@index([email])
+  @@index([role])
+  @@index([status])
+  @@map("users")
+}
+
+// ============================================
+// COURSES
+// ============================================
+
+enum CourseStatus {
+  ACTIVE
+  COMPLETED
+  UPCOMING
+  CANCELLED
+}
+
+enum CourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+model Course {
+  id              String        @id @default(cuid())
+  name            String
+  nameKg          String
+  nameRu          String
+  nameEn          String
+  description     String        @db.Text
+  descriptionKg   String        @db.Text
+  descriptionRu   String        @db.Text
+  descriptionEn   String        @db.Text
+  duration        String
+  price           Float
+  category        String
+  level           CourseLevel   @default(BEGINNER)
+  maxStudents     Int           @default(30)
+  startDate       DateTime
+  endDate         DateTime?
+  image           String?
+  status          CourseStatus  @default(ACTIVE)
+  
+  // Teacher relation
+  teacherId       String
+  teacher         User          @relation("TeacherCourses", fields: [teacherId], references: [id], onDelete: Cascade)
+  
+  // Schedule
+  scheduleDays    String[]      // ['Пн', 'Ср', 'Пт']
+  scheduleTime    String        // '18:00-20:00'
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  // Relations
+  enrollments     Enrollment[]
+  payments        Payment[]
+  bookings        Booking[]
+  testimonials    Testimonial[]
+  
+  @@index([category])
+  @@index([status])
+  @@index([teacherId])
+  @@map("courses")
+}
+
+// ============================================
+// ENROLLMENTS (Many-to-Many User-Course)
+// ============================================
+
+enum EnrollmentStatus {
+  ACTIVE
+  COMPLETED
+  DROPPED
+}
+
+model Enrollment {
+  id          String            @id @default(cuid())
+  userId      String
+  courseId    String
+  status      EnrollmentStatus  @default(ACTIVE)
+  enrolledAt  DateTime          @default(now())
+  completedAt DateTime?
+  progress    Float             @default(0) // 0-100%
+  
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course      Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, courseId])
+  @@index([userId])
+  @@index([courseId])
+  @@map("enrollments")
+}
+
+// ============================================
+// PAYMENTS
+// ============================================
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  REJECTED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  BANK
+  CASH
+  CARD
+  MBANK
+  ODENGI
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  userId          String
+  courseId        String
+  amount          Float
+  method          PaymentMethod
+  status          PaymentStatus @default(PENDING)
+  transactionId   String?       @unique
+  receipt         String?       // URL to receipt image
+  notes           String?       @db.Text
+  
+  confirmedBy     String?       // Admin ID
+  confirmedAt     DateTime?
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course          Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([courseId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("payments")
+}
+
+// ============================================
+// BOOKINGS
+// ============================================
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model Booking {
+  id            String        @id @default(cuid())
+  userId        String?       // Optional - guest bookings allowed
+  name          String
+  phone         String
+  courseId      String
+  paymentMethod String
+  status        BookingStatus @default(PENDING)
+  
+  processedBy   String?       // Admin ID
+  processedAt   DateTime?
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  user          User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  course        Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  @@index([courseId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("bookings")
+}
+
+// ============================================
+// TEAM MEMBERS
+// ============================================
+
+enum TeamCategory {
+  FOUNDER
+  MANAGEMENT
+  SALES
+  MENTOR
+  TRAINER
+  CURATOR
+}
+
+model TeamMember {
+  id          String        @id @default(cuid())
+  name        String
+  nameKg      String
+  nameRu      String
+  nameEn      String
+  role        String
+  roleKg      String
+  roleRu      String
+  roleEn      String
+  category    TeamCategory
+  specialty   String?       // 'Frontend', 'Backend', 'English'
+  photo       String
+  bio         String?       @db.Text
+  email       String?
+  phone       String?
+  
+  // Social links
+  telegram    String?
+  instagram   String?
+  linkedin    String?
+  
+  order       Int           @default(0) // Display order
+  active      Boolean       @default(true)
+  
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  @@index([category])
+  @@index([active])
+  @@map("team_members")
+}
+
+// ============================================
+// GRADUATES
+// ============================================
+
+model Graduate {
+  id            String    @id @default(cuid())
+  name          String
+  course        String
+  year          Int
+  photo         String?
+  currentJob    String?
+  company       String?
+  testimonial   String?   @db.Text
+  achievements  String[]
+  
+  featured      Boolean   @default(false)
+  active        Boolean   @default(true)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@index([year])
+  @@index([featured])
+  @@map("graduates")
+}
+
+// ============================================
+// TESTIMONIALS
+// ============================================
+
+enum TestimonialStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Testimonial {
+  id          String            @id @default(cuid())
+  userId      String
+  courseId    String
+  rating      Int               @default(5) // 1-5
+  text        String            @db.Text
+  textKg      String            @db.Text
+  textRu      String            @db.Text
+  textEn      String            @db.Text
+  status      TestimonialStatus @default(PENDING)
+  
+  approvedBy  String?           // Admin ID
+  approvedAt  DateTime?
+  
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course      Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([courseId])
+  @@index([status])
+  @@index([rating])
+  @@map("testimonials")
+}
+
+// ============================================
+// SETTINGS & CONFIGURATION
+// ============================================
+
+model Settings {
+  id          String    @id @default(cuid())
+  key         String    @unique
+  value       String    @db.Text
+  description String?
+  
+  updatedAt   DateTime  @updatedAt
+  
+  @@map("settings")
+}
+
+// ============================================
+// AUDIT LOG
+// ============================================
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+}
+
+model AuditLog {
+  id          String      @id @default(cuid())
+  userId      String
+  action      AuditAction
+  entity      String      // 'User', 'Course', 'Payment', etc.
+  entityId    String
+  changes     Json?       // Old and new values
+  ipAddress   String?
+  userAgent   String?
+  
+  createdAt   DateTime    @default(now())
+  
+  @@index([userId])
+  @@index([action])
+  @@index([entity])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
