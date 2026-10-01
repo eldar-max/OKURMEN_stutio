@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaUser, FaPhone, FaEnvelope, FaBook, FaMoneyBillWave, FaCommentDots, FaCreditCard, FaUniversity, FaMoneyBill, FaCalendar } from 'react-icons/fa';
 import { sendBookingNotification } from '../services/telegram';
+import { useLanguage } from '../context/LanguageContext';
 
 function BookingModal({ isOpen, onClose, selectedCourse }) {
+  const { t } = useLanguage();
   const [step, setStep] = useState(1); // 1: Форма, 2: Выбор оплаты, 3: Успех
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -27,39 +29,37 @@ function BookingModal({ isOpen, onClose, selectedCourse }) {
   ];
 
   const paymentMethods = [
-    { id: 'bank', name: 'Банковский перевод', icon: FaUniversity, description: 'Перевод на счет компании' },
-    { id: 'card', name: 'Оплата картой', icon: FaCreditCard, description: 'Visa, MasterCard, Элкарт' },
-    { id: 'cash', name: 'Наличными', icon: FaMoneyBill, description: 'Оплата в офисе' },
+    { id: 'bank', name: t('bankTransfer'), icon: FaUniversity, description: t('bankTransferDesc') },
+    { id: 'card', name: t('cardPayment'), icon: FaCreditCard, description: t('cardPaymentDesc') },
+    { id: 'cash', name: t('cashPayment'), icon: FaMoneyBill, description: t('cashPaymentDesc') },
   ];
 
   const validateForm = () => {
     const newErrors = {};
 
     if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Введите ваше имя';
+      newErrors.fullName = t('enterName');
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = 'Введите номер телефона';
+      newErrors.phone = t('enterPhone');
     } else {
-      // Убираем все пробелы, скобки, дефисы, плюсы для проверки
       const cleanPhone = formData.phone.replace(/[\s\-\(\)\+]/g, '');
-      // Принимаем номера от 9 до 15 цифр (поддержка разных форматов)
       if (!/^[0-9]{9,15}$/.test(cleanPhone)) {
-        newErrors.phone = 'Неверный формат телефона (9-15 цифр)';
+        newErrors.phone = t('invalidPhoneFormat');
       }
     }
 
     if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Неверный формат email';
+      newErrors.email = t('invalidEmail');
     }
 
     if (!formData.course) {
-      newErrors.course = 'Выберите курс';
+      newErrors.course = t('selectCourseError');
     }
 
     if (!formData.startDate) {
-      newErrors.startDate = 'Выберите дату начала';
+      newErrors.startDate = t('selectStartDate');
     }
 
     console.log('📋 Validation errors:', newErrors);
