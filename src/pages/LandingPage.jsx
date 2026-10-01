@@ -5,6 +5,7 @@ import AboutUs from '../components/AboutUs';
 import WhyUs from '../components/WhyUs';
 import Features from '../components/Features';
 import TechStack from '../components/TechStack';
+import Pricing from '../components/Pricing';
 import Courses from '../components/Courses';
 import Team from '../components/Team';
 import Founders from '../components/Founders';
@@ -24,6 +25,7 @@ function LandingPage() {
       <WhyUs />
       <Features />
       <TechStack />
+      <Pricing />
       <Courses />
       <Team />
       <Founders />
