@@ -375,8 +375,42 @@ export const translations = {
     chooseCourse: 'Курс тандоо',
     contactUs: 'Биз менен байланышуу',
     
-    // Contact
-    address: 'Дарек',
+    // Login page
+    loginTitle: 'Кирүү',
+    loginSubtitle: 'Аккаунтуңузга кириңиз',
+    usernameOrEmail: 'Колдонуучунун аты же Email',
+    password: 'Сыр сөз',
+    forgotPassword: 'Сыр сөзүн унуттуңузбу?',
+    loginButton: 'Кирүү',
+    loginWithGoogle: 'Google аркылуу кирүү',
+    noAccount: 'Аккаунт жокпу?',
+    registerNow: 'Азыр катталыңыз',
+    backToHome: 'Башкы бетке кайтуу',
+    
+    // Registration page
+    registerTitle: 'Катталуу',
+    registerSubtitle: 'Жаңы аккаунт түзүү',
+    fullName: 'Толук аты',
+    username: 'Колдонуучунун аты',
+    email: 'Email',
+    confirmPassword: 'Сыр сөздү ырастоо',
+    registerButton: 'Катталуу',
+    registerWithGoogle: 'Google аркылуу катталуу',
+    haveAccount: 'Аккаунт барбы?',
+    loginNow: 'Азыр кириңиз',
+    
+    // Errors
+    errorLogin: 'Кирүү катасы',
+    errorRegister: 'Катталуу катасы',
+    errorGoogle: 'Google аркылуу кирүү катасы',
+    
+    // Success
+    resetEmailSent: 'Сыр сөздү калыбына келтирүү шилтемеси email га жөнөтүлдү',
+    
+    // Forgot Password Modal
+    resetPasswordTitle: 'Сыр сөздү калыбына келтирүү',
+    enterEmailToReset: 'Сыр сөздү калыбына келтирүү үчүн email дарегиңизди киргизиңиз',
+    sendResetLink: 'Шилтеме жөнөтүү',
     addressFull: 'Бишкек ш., Примерная көч., 123\nБЦ "IT-Park", 3-кабат',
     nearMetro: 'Метро "Московская" жанында',
     phone: 'Телефон',

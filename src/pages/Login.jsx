@@ -6,8 +6,10 @@ import { signInWithGoogle, resetPassword } from '../services/firebase';
 import logo from '../assets/5309874850258165398_121.jpg';
 import Loader from '../components/Loader';
 import { generateAndSendAdminCode } from '../services/adminCode';
+import { useLanguage } from '../context/LanguageContext';
 
 function Login() {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
