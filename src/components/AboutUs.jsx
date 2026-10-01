@@ -14,23 +14,23 @@ function AboutUs() {
   const features = [
     {
       icon: FaBullseye,
-      title: 'Гибриддик формат',
-      description: 'Онлайн сабактар + жеке ментор колдоо',
+      title: t('hybridFormat'),
+      description: t('hybridFormatDesc'),
     },
     {
       icon: FaUserTie,
-      title: 'Тажрыйбалуу тренерлер',
-      description: 'Америкада иштеген мугалимдер',
+      title: t('experiencedTrainers'),
+      description: t('experiencedTrainersDesc'),
     },
     {
       icon: FaGift,
-      title: 'Бонус сабактар',
-      description: 'AI, Оратордук акысыз',
+      title: t('bonusLessons'),
+      description: t('bonusLessonsDesc'),
     },
     {
       icon: FaBriefcase,
-      title: 'Иш табууга жардам',
-      description: 'Компанияларга жайгаштыруу',
+      title: t('jobPlacement'),
+      description: t('jobPlacementDesc'),
     },
   ];
 
@@ -50,10 +50,10 @@ function AboutUs() {
             baseRotation={3}
             blurStrength={4}
           >
-            ОКУРМЭН — заманбап билим берүү борбору. Биз 2022-жылдан бери сапаттуу билим берип келебиз.
+            {t('aboutDescription')}
           </ScrollReveal>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mt-6">
-            ОКУРМЭН 2022-жылы май айында Санжарбек Мадумар жана Улукбек Бакыбек уулу тарабынан негизделген
+            {t('aboutFoundedText')}
           </p>
         </motion.div>
 
@@ -67,37 +67,39 @@ function AboutUs() {
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <h3 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">
-                Билимден мүмкүнчүлүккө карай
+                {t('fromKnowledgeToOpportunities')}
               </h3>
               <p className="text-lg text-gray-700 mb-4 leading-relaxed">
-                Бүгүнкү күндө ОКУРМЭНде 3000ден ашуун окуучу билим алды.
+                {t('studentsLearned')}
               </p>
               <p className="text-lg text-gray-700 mb-4 leading-relaxed">
-                ОКУРМЭНде 15 жаштан 50 жашка чейинки окуучулар билим алып, жаңы кесиптерди өздөштүрүп, заманбап көндүмдөрүн өнүктүрүшөт.
+                {t('studentsAgeRange')}
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Алардын арасында ири компанияларда, Бишкек мэриясында, Казакстандагы IT компанияларда иштеп жаткандар бар.
+                {t('studentsWorkAt')}
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg text-center transition-colors">
                 <FaBriefcase className="text-5xl text-orange-600 mb-3 mx-auto" />
                 <div className="text-2xl font-bold text-orange-600">500+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Иштеп жаткандар</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">{t('employed')}</div>
               </div>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg text-center transition-colors">
                 <FaBullseye className="text-5xl text-orange-600 mb-3 mx-auto" />
                 <div className="text-2xl font-bold text-orange-600">2022</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Жылдан бери</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">{t('sinceYear')}</div>
               </div>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg text-center transition-colors">
                 <FaGift className="text-5xl text-orange-600 mb-3 mx-auto" />
                 <div className="text-2xl font-bold text-orange-600">Freelance</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Киреше</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">{t('freelanceIncome')}</div>
               </div>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg text-center transition-colors">
                 <FaUserTie className="text-5xl text-orange-600 mb-3 mx-auto" />
                 <div className="text-2xl font-bold text-orange-600">3000+</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">{t('graduates')}</div>
+              </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Выпускников</div>
               </div>
             </div>
