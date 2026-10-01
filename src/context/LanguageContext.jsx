@@ -59,6 +59,25 @@ export const translations = {
     whyJob: 'Помощь с трудоустройством',
     whyJobText: 'Карьерные консультации и стажировки в IT компаниях',
     
+    // Tech Stack
+    techStack: {
+      badge: 'Современные технологии',
+      title: 'Технологический стек',
+      description: 'Мы обучаем самым востребованным и современным технологиям в IT индустрии',
+      categories: {
+        frontend: 'Frontend разработка',
+        backend: 'Backend разработка',
+        database: 'Базы данных',
+        tools: 'Инструменты'
+      },
+      stats: {
+        technologies: 'Технологий',
+        modern: 'Современные',
+        support: 'Поддержка',
+        updates: 'Обновления'
+      }
+    },
+    
     // Courses
     coursesTitle: 'Наши курсы',
     coursesSubtitle: 'Выберите направление для обучения',
@@ -237,6 +256,25 @@ export const translations = {
     whyJob: 'Job Assistance',
     whyJobText: 'Career consultations and internships in IT companies',
     
+    // Tech Stack
+    techStack: {
+      badge: 'Modern Technologies',
+      title: 'Technology Stack',
+      description: 'We teach the most in-demand and modern technologies in the IT industry',
+      categories: {
+        frontend: 'Frontend Development',
+        backend: 'Backend Development',
+        database: 'Databases',
+        tools: 'Tools'
+      },
+      stats: {
+        technologies: 'Technologies',
+        modern: 'Modern',
+        support: 'Support',
+        updates: 'Updates'
+      }
+    },
+    
     // Courses
     coursesTitle: 'Our Courses',
     coursesSubtitle: 'Choose your learning path',
@@ -398,6 +436,25 @@ export const translations = {
     whySupportText: 'Мугалимдердин жана кураторлордун каалаган убакта жардамы',
     whyJob: 'Жумушка жайгаштырууга жардам',
     whyJobText: 'Карьера боюнча консультациялар жана IT компанияларда практика',
+    
+    // Tech Stack
+    techStack: {
+      badge: 'Заманбап технологиялар',
+      title: 'Технологиялык стек',
+      description: 'Биз IT тармагында эң суроо-талаптуу жана заманбап технологияларга үйрөтөбүз',
+      categories: {
+        frontend: 'Frontend иштеп чыгуу',
+        backend: 'Backend иштеп чыгуу',
+        database: 'Маалымат базалары',
+        tools: 'Куралдар'
+      },
+      stats: {
+        technologies: 'Технологиялар',
+        modern: 'Заманбап',
+        support: 'Колдоо',
+        updates: 'Жаңыртуулар'
+      }
+    },
     
     // Courses
     coursesTitle: 'Биздин курстар',
