@@ -48,6 +48,10 @@ export const translations = {
     // Courses
     coursesTitle: 'Наши курсы',
     coursesSubtitle: 'Выберите направление для обучения',
+    allCourses: 'Все курсы',
+    itCourses: 'IT курсы',
+    languages: 'Языки',
+    skills: 'Навыки',
     frontend: 'Frontend разработка',
     frontendDesc: 'HTML, CSS, JavaScript, React',
     backend: 'Backend разработка',
@@ -139,6 +143,10 @@ export const translations = {
     // Courses
     coursesTitle: 'Our Courses',
     coursesSubtitle: 'Choose your learning path',
+    allCourses: 'All Courses',
+    itCourses: 'IT Courses',
+    languages: 'Languages',
+    skills: 'Skills',
     frontend: 'Frontend Development',
     frontendDesc: 'HTML, CSS, JavaScript, React',
     backend: 'Backend Development',
@@ -230,6 +238,10 @@ export const translations = {
     // Courses
     coursesTitle: 'Биздин курстар',
     coursesSubtitle: 'Окуу багытын тандаңыз',
+    allCourses: 'Бардык курстар',
+    itCourses: 'IT курстар',
+    languages: 'Тилдер',
+    skills: 'Көндүмдөр',
     frontend: 'Frontend иштеп чыгуу',
     frontendDesc: 'HTML, CSS, JavaScript, React',
     backend: 'Backend иштеп чыгуу',

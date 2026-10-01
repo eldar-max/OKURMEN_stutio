@@ -25,10 +25,10 @@ function Courses() {
   };
 
   const categories = [
-    { id: 'all', name: 'Все курсы' },
-    { id: 'it', name: 'IT курсы' },
-    { id: 'language', name: 'Языки' },
-    { id: 'skills', name: 'Навыки' },
+    { id: 'all', name: t('allCourses') },
+    { id: 'it', name: t('itCourses') },
+    { id: 'language', name: t('languages') },
+    { id: 'skills', name: t('skills') },
   ];
 
   const courses = [
@@ -98,11 +98,11 @@ function Courses() {
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
             <span className="bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">
-              Наши курсы
+              {t('coursesTitle')}
             </span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto px-4">
-            Выберите свой путь к успеху. Все курсы с гибридным форматом обучения
+            {t('coursesSubtitle')}
           </p>
         </motion.div>
 
@@ -183,7 +183,7 @@ function Courses() {
                   onClick={() => handleBooking(course.id)}
                   className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full font-semibold text-sm sm:text-base shadow-md hover:shadow-lg transition-shadow"
                 >
-                  Записаться
+                  {t('enrollNow')}
                 </motion.button>
               </div>
             </motion.div>
