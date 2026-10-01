@@ -208,7 +208,7 @@ export const translations = {
     courses: 'Курстар',
     contacts: 'Байланыш',
     login: 'Кирүү',
-    register: 'Катталуу',
+    register: 'Каттоо',
     
     // Hero
     heroTitle: 'Билим берүү платформасы',
@@ -290,10 +290,25 @@ export const translations = {
     continue: 'Улантуу',
     
     // Common
-    students: 'Студенттер',
-    teachers: 'Мугалимдер',
+    students: 'Окуучу',
+    teachers: 'Мугалим',
     years: 'Жылдык тажрыйба',
-    projects: 'Долбоорлор',
+    projects: 'Долбоор',
+    
+    // Stats
+    studentsCount: 'Окуучулар',
+    coursesCount: 'Курстар',
+    satisfaction: 'Канааттануу',
+    
+    // Additional
+    hybridLearning: 'Гибриддик окуу',
+    onlineMentor: 'Онлайн + Ментор колдоо',
+    itCoursesLabel: 'IT курстар',
+    frontendBackend: 'Frontend, Backend',
+    publicSpeaking: 'Сүйлөө чеберчилиги',
+    presentations: 'Презентациялар',
+    artificialIntelligence: 'Жасалма интеллект',
+    aiTools: 'AI куралдар',
   }
 };
 
