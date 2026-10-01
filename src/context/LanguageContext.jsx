@@ -85,10 +85,19 @@ export const translations = {
     
     // Footer
     footerAbout: 'О платформе',
-    footerAboutText: 'OKURMEN - современная образовательная платформа для изучения IT технологий',
+    footerAboutText: 'От знаний к возможностям. Изучайте современные технологии и стройте свое будущее!',
     quickLinks: 'Быстрые ссылки',
     followUs: 'Мы в соцсетях',
     allRightsReserved: 'Все права защищены',
+    workingHours: 'Время работы',
+    mondayFriday: 'Пн-Пт:',
+    mondayFridayTime: '9:00 - 18:00',
+    ourAddress: 'Наш адрес',
+    callUs: 'Позвоните нам',
+    writeUs: 'Напишите нам',
+    privacyPolicy: 'Политика конфиденциальности',
+    termsOfUse: 'Условия использования',
+    foundedIn: 'Основано в',
     
     // Booking Modal
     bookingTitle: 'Бронирование урока',
@@ -381,10 +390,19 @@ export const translations = {
     
     // Footer
     footerAbout: 'Платформа жөнүндө',
-    footerAboutText: 'OKURMEN - IT технологияларын үйрөнүү үчүн заманбап билим берүү платформасы',
+    footerAboutText: 'Билимден мүмкүнчүлүккө карай. Заманбап технологияларды үйрөнүп, келечегиңди түз!',
     quickLinks: 'Тез шилтемелер',
     followUs: 'Биз соцтармактарда',
     allRightsReserved: 'Бардык укуктар корголгон',
+    workingHours: 'Иштөө режими',
+    mondayFriday: 'Дүйшөмбү - Жума:',
+    mondayFridayTime: '9:00 - 18:00',
+    ourAddress: 'Биздин дарек',
+    callUs: 'Бизге чалыңыз',
+    writeUs: 'Бизге жазыңыз',
+    privacyPolicy: 'Купуялуулук саясаты',
+    termsOfUse: 'Колдонуу шарттары',
+    foundedIn: 'Түзүлгөн жылы',
     
     // Booking Modal
     bookingTitle: 'Сабак брондоо',

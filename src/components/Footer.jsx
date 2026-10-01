@@ -4,8 +4,10 @@ import {
   FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock 
 } from 'react-icons/fa';
 import logo from '../assets/5309874850258165398_121.jpg';
+import { useLanguage } from '../context/LanguageContext';
 
 function Footer() {
+  const { t } = useLanguage();
   const socialLinks = [
     { icon: FaFacebook, url: 'https://www.facebook.com/it.stuio', label: 'Facebook', color: 'hover:text-blue-600' },
     { icon: FaInstagram, url: 'https://www.instagram.com/okurmen_studio/', label: 'Instagram', color: 'hover:text-pink-600' },
@@ -15,11 +17,11 @@ function Footer() {
   ];
 
   const quickLinks = [
-    { name: 'О нас', href: '#about' },
-    { name: 'Курсы', href: '#courses' },
-    { name: 'Команда', href: '#team' },
-    { name: 'Студенты', href: '#students' },
-    { name: 'Отзывы', href: '#testimonials' },
+    { name: t('about'), href: '#about' },
+    { name: t('courses'), href: '#courses' },
+    { name: t('teamTitle'), href: '#team' },
+    { name: t('graduatesTitle'), href: '#students' },
+    { name: t('testimonialsTitle'), href: '#testimonials' },
   ];
 
   const courses = [
@@ -47,7 +49,7 @@ function Footer() {
                 <span className="text-xl sm:text-2xl font-bold">ОКУРМЭН</span>
               </div>
               <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
-                Билимден мүмкүнчүлүккө карай. Заманбап технологияларды үйрөнүп, келечегиңди түз!
+                {t('footerAboutText')}
               </p>
             </motion.div>
 
@@ -71,7 +73,7 @@ function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Быстрые ссылки</h3>
+            <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">{t('quickLinks')}</h3>
             <ul className="space-y-2 sm:space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
@@ -88,7 +90,7 @@ function Footer() {
 
           {/* Courses */}
           <div>
-            <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Курсы</h3>
+            <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">{t('courses')}</h3>
             <ul className="space-y-2 sm:space-y-3">
               {courses.map((course, index) => (
                 <li key={index}>
@@ -105,13 +107,13 @@ function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Контакты</h3>
+            <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">{t('contacts')}</h3>
             <ul className="space-y-3 sm:space-y-4">
               <li className="flex items-start space-x-3">
                 <FaMapMarkerAlt className="text-blue-500 mt-1 flex-shrink-0 text-sm sm:text-base" />
                 <div>
                   <p className="text-sm sm:text-base text-gray-400">г. Бишкек, Кыргызстан</p>
-                  <p className="text-xs sm:text-sm text-gray-500">Наш адрес</p>
+                  <p className="text-xs sm:text-sm text-gray-500">{t('ourAddress')}</p>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
@@ -120,7 +122,7 @@ function Footer() {
                   <a href="tel:+996" className="text-sm sm:text-base text-gray-400 hover:text-white">
                     +996 XXX XXX XXX
                   </a>
-                  <p className="text-xs sm:text-sm text-gray-500">Позвоните нам</p>
+                  <p className="text-xs sm:text-sm text-gray-500">{t('callUs')}</p>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
@@ -129,14 +131,14 @@ function Footer() {
                   <a href="mailto:info@okurmen.kg" className="text-sm sm:text-base text-gray-400 hover:text-white break-all">
                     info@okurmen.kg
                   </a>
-                  <p className="text-xs sm:text-sm text-gray-500">Напишите нам</p>
+                  <p className="text-xs sm:text-sm text-gray-500">{t('writeUs')}</p>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
                 <FaClock className="text-yellow-500 mt-1 flex-shrink-0 text-sm sm:text-base" />
                 <div>
-                  <p className="text-sm sm:text-base text-gray-400">Пн-Пт: 9:00 - 18:00</p>
-                  <p className="text-xs sm:text-sm text-gray-500">Время работы</p>
+                  <p className="text-sm sm:text-base text-gray-400">{t('mondayFriday')} {t('mondayFridayTime')}</p>
+                  <p className="text-xs sm:text-sm text-gray-500">{t('workingHours')}</p>
                 </div>
               </li>
             </ul>
@@ -147,21 +149,21 @@ function Footer() {
         <div className="border-t border-gray-700 pt-6 sm:pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-gray-400 text-xs sm:text-sm text-center md:text-left">
-              © 2024 ОКУРМЭН. Все права защищены.
+              © 2024 ОКУРМЭН. {t('allRightsReserved')}.
             </p>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 text-xs sm:text-sm text-gray-400 text-center">
               <a href="#" className="hover:text-white transition-colors">
-                Политика конфиденциальности
+                {t('privacyPolicy')}
               </a>
               <a href="#" className="hover:text-white transition-colors">
-                Условия использования
+                {t('termsOfUse')}
               </a>
             </div>
           </div>
 
           <div className="mt-4 sm:mt-6 text-center">
             <p className="text-gray-500 text-xs sm:text-sm px-4">
-              Основано в 2022 году • Санжарбек Мадумар & Улукбек Бакыбек уулу
+              {t('foundedIn')} 2022 • Санжарбек Мадумар & Улукбек Бакыбек уулу
             </p>
           </div>
         </div>
