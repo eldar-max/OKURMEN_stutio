@@ -2,8 +2,10 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaBullseye, FaUserTie, FaGift, FaBriefcase } from 'react-icons/fa';
 import ScrollReveal from './ScrollReveal';
+import { useLanguage } from '../context/LanguageContext';
 
 function AboutUs() {
+  const { t } = useLanguage();
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
