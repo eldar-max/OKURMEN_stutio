@@ -171,11 +171,11 @@ function TechStack() {
                       className="relative group"
                       style={{ perspective: '1000px' }}
                     >
-                      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-orange-500 transform-gpu">
+                      <div className="bg-gradient-to-br from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-yellow-600 hover:border-orange-500 transform-gpu">
                         {/* Glow effect */}
                         <div 
-                          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-xl"
-                          style={{ background: tech.color }}
+                          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-300 blur-xl"
+                          style={{ background: 'linear-gradient(135deg, #fbbf24, #f59e0b)' }}
                         />
                         
                         {/* Content */}
@@ -190,21 +190,21 @@ function TechStack() {
                               repeat: Infinity,
                               ease: "linear"
                             }}
-                            className="text-6xl"
+                            className="text-6xl drop-shadow-lg"
                             style={{ color: tech.color }}
                           >
                             <Icon />
                           </motion.div>
                           
                           {/* Name */}
-                          <h4 className="text-sm font-bold text-gray-900 dark:text-white text-center">
+                          <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 text-center">
                             {tech.name}
                           </h4>
                         </div>
 
                         {/* Sparkle effect on hover */}
                         <motion.div
-                          className="absolute top-2 right-2 w-2 h-2 bg-orange-500 rounded-full opacity-0 group-hover:opacity-100"
+                          className="absolute top-2 right-2 w-2 h-2 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100"
                           animate={{
                             scale: [0, 1, 0],
                           }}
