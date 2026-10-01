@@ -132,7 +132,7 @@ function Navbar() {
           </div>
 
           {/* CTA Button - Right */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-2 lg:space-x-3">
             {/* Language Switcher */}
             <LanguageSwitcher />
             
@@ -141,13 +141,13 @@ function Navbar() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={toggleTheme}
-              className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="p-1.5 lg:p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               aria-label="Toggle theme"
             >
               {theme === 'light' ? (
-                <FaMoon className="text-xl text-gray-700 dark:text-gray-300" />
+                <FaMoon className="text-base lg:text-xl text-gray-700 dark:text-gray-300" />
               ) : (
-                <FaSun className="text-xl text-yellow-500" />
+                <FaSun className="text-base lg:text-xl text-yellow-500" />
               )}
             </motion.button>
 
@@ -219,7 +219,7 @@ function Navbar() {
                   whileTap={{ scale: 0.95 }}
                   className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 font-semibold transition-colors"
                 >
-                  Войти
+                  {t('login')}
                 </motion.a>
                 <motion.a
                   href="/registration"
@@ -227,7 +227,7 @@ function Navbar() {
                   whileTap={{ scale: 0.95 }}
                   className="px-6 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all relative overflow-hidden group"
                 >
-                  <span className="relative z-10">Регистрация</span>
+                  <span className="relative z-10">{t('register')}</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                 </motion.a>
               </>
