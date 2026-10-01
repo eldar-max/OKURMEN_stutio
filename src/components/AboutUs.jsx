@@ -100,8 +100,6 @@ function AboutUs() {
                 <div className="text-2xl font-bold text-orange-600">3000+</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">{t('graduates')}</div>
               </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Выпускников</div>
-              </div>
             </div>
           </div>
         </motion.div>
