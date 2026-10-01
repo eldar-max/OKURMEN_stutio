@@ -124,7 +124,7 @@ function Navbar() {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors font-medium whitespace-nowrap"
+                className="text-gray-800 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors font-medium whitespace-nowrap"
               >
                 {item.name}
               </a>
