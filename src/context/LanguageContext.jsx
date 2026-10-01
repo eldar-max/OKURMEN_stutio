@@ -82,8 +82,15 @@ export const translations = {
     
     // Team
     teamTitle: 'Наша команда',
-    teamSubtitle: 'Преподаватели-практики',
+    teamSubtitle: 'Профессионалы, которые помогут вам достичь успеха',
+    founders: 'Основатели',
+    trainers: 'Тренеры',
+    mentors: 'Менторы',
+    staff: 'Персонал',
     teacher: 'Преподаватель',
+    experience: 'Опыт',
+    startDate: 'Дата начала',
+    sector: 'Сектор',
     
     // Founders
     foundersTitle: 'Основатели',
@@ -415,8 +422,15 @@ export const translations = {
     
     // Team
     teamTitle: 'Биздин команда',
-    teamSubtitle: 'Практикалык мугалимдер',
+    teamSubtitle: 'Сизге ийгиликке жетүүгө жардам бер учу профессионалдар',
+    founders: 'Негиздөөчүлөр',
+    trainers: 'Тренерлер',
+    mentors: 'Менторлор',
+    staff: 'Персонал',
     teacher: 'Мугалим',
+    experience: 'Тажрыйба',
+    startDate: 'Башталган күн',
+    sector: 'Сектор',
     
     // Founders
     foundersTitle: 'Негиздөөчүлөр',
