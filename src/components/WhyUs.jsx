@@ -85,7 +85,7 @@ function WhyUs() {
         >
           <h2 className="text-5xl font-bold mb-4">
             <span className="bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">
-              Почему выбирают нас?
+              {t('whyTitle')}
             </span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
@@ -146,9 +146,9 @@ function WhyUs() {
           transition={{ delay: 1, duration: 0.8 }}
           className="mt-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-3xl p-12 text-center text-white"
         >
-          <h3 className="text-3xl font-bold mb-4">Готовы начать обучение?</h3>
+          <h3 className="text-3xl font-bold mb-4">{t('readyToStart')}</h3>
           <p className="text-xl mb-8 text-orange-100">
-            Присоединяйтесь к нам и станьте частью успешного IT-сообщества!
+            {t('joinSuccessfulIT')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <motion.a
@@ -157,7 +157,7 @@ function WhyUs() {
               whileTap={{ scale: 0.95 }}
               className="px-8 py-4 bg-white text-orange-600 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow"
             >
-              Выбрать курс
+              {t('chooseCourse')}
             </motion.a>
             <motion.a
               href="#contact"
@@ -165,7 +165,7 @@ function WhyUs() {
               whileTap={{ scale: 0.95 }}
               className="px-8 py-4 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold border-2 border-white hover:bg-white/30 transition-colors"
             >
-              Связаться с нами
+              {t('contactUs')}
             </motion.a>
           </div>
         </motion.div>
