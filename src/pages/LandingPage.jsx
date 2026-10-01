@@ -5,11 +5,13 @@ import AboutUs from '../components/AboutUs';
 import WhyUs from '../components/WhyUs';
 import Features from '../components/Features';
 import Stats from '../components/Stats';
+import HowItWorks from '../components/HowItWorks';
 import TechStack from '../components/TechStack';
 import Pricing from '../components/Pricing';
 import Courses from '../components/Courses';
 import Team from '../components/Team';
 import Founders from '../components/Founders';
+import Partners from '../components/Partners';
 import OurClassrooms from '../components/OurClassrooms';
 import Students from '../components/Students';
 import Graduates from '../components/Graduates';
@@ -27,11 +29,13 @@ function LandingPage() {
       <WhyUs />
       <Features />
       <Stats />
+      <HowItWorks />
       <TechStack />
       <Pricing />
       <Courses />
       <Team />
       <Founders />
+      <Partners />
       <OurClassrooms />
       <Students />
       <Graduates />
