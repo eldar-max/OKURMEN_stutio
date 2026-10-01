@@ -5,10 +5,13 @@ import { FaUserCircle, FaSignOutAlt, FaCrown, FaMoon, FaSun } from 'react-icons/
 import { signOutUser } from '../services/firebase';
 import WinkingLogo from './WinkingLogo';
 import { useTheme } from '../context/ThemeContext';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useLanguage } from '../context/LanguageContext';
 
 function Navbar() {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { t } = useLanguage();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
   const [userRole, setUserRole] = useState('');
@@ -84,12 +87,12 @@ function Navbar() {
   };
 
   const menuItems = [
-    { name: 'О нас', href: '#about' },
-    { name: 'Курсы', href: '#courses' },
-    { name: 'Команда', href: '#team' },
-    { name: 'Студенты', href: '#students' },
-    { name: 'Отзывы', href: '#testimonials' },
-    { name: 'Контакты', href: '#contact' },
+    { name: t('about'), href: '#about' },
+    { name: t('courses'), href: '#courses' },
+    { name: t('teamTitle'), href: '#team' },
+    { name: t('students'), href: '#students' },
+    { name: t('testimonialsTitle'), href: '#testimonials' },
+    { name: t('contacts'), href: '#contact' },
   ];
 
   return (
@@ -130,6 +133,9 @@ function Navbar() {
 
           {/* CTA Button - Right */}
           <div className="hidden md:flex items-center space-x-4">
+            {/* Language Switcher */}
+            <LanguageSwitcher />
+            
             {/* Theme Toggle Button */}
             <motion.button
               whileHover={{ scale: 1.1 }}

@@ -2,13 +2,17 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMessageCircle, FiX, FiSend, FiUser, FiCpu } from 'react-icons/fi';
 import axios from 'axios';
+import { useLanguage } from '../context/LanguageContext';
 
 const AIChat = () => {
+  const { language, t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: 'Здравствуйте! Я AI ассистент OKURMEN. Чем могу помочь?',
+      content: language === 'ru' ? 'Здравствуйте! Я AI ассистент OKURMEN. Чем могу помочь?' :
+               language === 'en' ? 'Hello! I am OKURMEN AI assistant. How can I help you?' :
+               'Салам! Мен OKURMEN AI ассистентимин. Сизге кандай жардам бере алам?',
       timestamp: new Date()
     }
   ]);

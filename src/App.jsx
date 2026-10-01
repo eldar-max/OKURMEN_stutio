@@ -8,6 +8,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminVerification from './pages/AdminVerification';
 import NotFound from './pages/NotFound';
 import PageLoader from './components/PageLoader';
+import { LanguageProvider } from './context/LanguageContext';
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
@@ -33,7 +34,7 @@ function AdminProtectedRoute({ children }) {
 
 function App() {
   return (
-    <>
+    <LanguageProvider>
       <PageLoader />
       <Router>
         <Routes>
@@ -68,7 +69,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
-    </>
+    </LanguageProvider>
   );
 }
 
