@@ -289,8 +289,11 @@ export const translations = {
     cancel: 'Жокко чыгаруу',
     continue: 'Улантуу',
     
-    // Common
-    students: 'Окуучу',
+    // Why Us - Stats
+    graduates: 'Бүтүрүүчүлөр',
+    employed: 'Жумушка орношкон',
+    mentors: 'Тажрыйбалуу менторлор',
+    avgRating: 'Орточо рейтинг',
     teachers: 'Мугалим',
     years: 'Жылдык тажрыйба',
     projects: 'Долбоор',

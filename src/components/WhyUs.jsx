@@ -66,10 +66,10 @@ function WhyUs() {
   ];
 
   const stats = [
-    { number: '500+', label: 'Выпускников', icon: FaGraduationCap },
-    { number: '95%', label: 'Трудоустроены', icon: FaHandshake },
-    { number: '12+', label: 'Опытных менторов', icon: FaChalkboardTeacher },
-    { number: '4.9/5', label: 'Средний рейтинг', icon: FaAward },
+    { number: '500+', label: t('graduates'), icon: FaGraduationCap },
+    { number: '95%', label: t('employed'), icon: FaHandshake },
+    { number: '12+', label: t('mentors'), icon: FaChalkboardTeacher },
+    { number: '4.9/5', label: t('avgRating'), icon: FaAward },
   ];
 
   return (
