@@ -295,20 +295,95 @@ export const translations = {
     years: 'Жылдык тажрыйба',
     projects: 'Долбоор',
     
-    // Stats
-    studentsCount: 'Окуучулар',
-    coursesCount: 'Курстар',
-    satisfaction: 'Канааттануу',
-    
-    // Additional
+    // Why Us - Features
+    experiencedTeachers: 'Тажрыйбалуу мугалимдер',
+    experiencedTeachersDesc: 'Практикалоочу адистер чоң IT компаниялардан',
+    modernEquipment: 'Заманбап жабдуулар',
+    modernEquipmentDesc: 'Жаңы компьютерлер жана кесиптик ПО окуу үчүн',
+    smallGroups: 'Кичинекей топтор',
+    smallGroupsDesc: '15 адамга чейин - жекече мамиле ар бирөөгө',
+    certificate: 'Сертификат',
+    certificateDesc: 'Курсту аяктагандан кийин расмий сертификат',
+    jobAssistance: 'Жумушка жайгаштырууга жардам',
+    jobAssistanceDesc: 'Резюме түзүү жана CV кайра карап чыгуу',
+    realProjects: 'Чыныгы долбоорлор',
+    realProjectsDesc: 'Реалдуу кейстер менен иштөө жана портфолио',
+    support247: 'Колдоо 24/7',
+    support247Desc: 'Менторлор дайыма байланышта жардам үчүн',
     hybridLearning: 'Гибриддик окуу',
-    onlineMentor: 'Онлайн + Ментор колдоо',
-    itCoursesLabel: 'IT курстар',
-    frontendBackend: 'Frontend, Backend',
-    publicSpeaking: 'Сүйлөө чеберчилиги',
-    presentations: 'Презентациялар',
-    artificialIntelligence: 'Жасалма интеллект',
-    aiTools: 'AI куралдар',
+    hybridLearningDesc: 'Онлайн + Ментор колдоо офлайн',
+    
+    // Team
+    founders: 'Негиздөөчүлөр',
+    trainers: 'Тренерлер',
+    mentors: 'Менторлор',
+    staff: 'Персонал',
+    coFounderCEO: 'Кошо-негиздөөчү жана CEO',
+    coFounderCTO: 'Кошо-негиздөөчү жана CTO',
+    
+    // Graduates
+    graduatesWorkAt: 'Биздин бүтүрүүчүлөр кайда иштешет',
+    graduatesEarn: 'Бүтүрүүчүлөр табышы',
+    bishkekMarinesy: 'Бишкек Маринесы',
+    itCompaniesKG: 'IT Компаниялар (КР)',
+    itCompaniesKZ: 'IT Компаниялар (КЗ)',
+    kulykovsky: 'Кулыковский',
+    freelance: 'Фриланс',
+    startups: 'Стартаптар',
+    successStories: 'Ийгилик окуялары',
+    frontendDeveloper: 'Frontend Developer',
+    backendDeveloper: 'Backend Developer',
+    freelanceDeveloper: 'Freelance Developer',
+    itCompanyKZ: 'IT Company KZ',
+    selfEmployed: 'Өзүн-өзү иштетүүчү',
+    becomeSuccessfulGraduate: 'Кийинки ийгиликтүү бүтүрүүчү боло көр!',
+    joinOver3000Students: '3000+ студенттерге кошул, алар өз жашоосун өзгөртүштү',
+    enrollInCourse: 'Курска жазылуу',
+    
+    // Testimonials
+    testimonials: 'Пикирлер',
+    whatStudentsSay: 'Студенттерибиз жана ата-энелери эмне дейт',
+    studentsTab: 'Студенттер',
+    parentsTab: 'Ата-энелер',
+    
+    // Classrooms
+    ourClassrooms: 'Биздин аудиториялар',
+    modernComfortableSpaces: 'Заманбап жана ыңгайлуу жайлар эффективдүү окуу үчүн',
+    modernComputers: 'Заманбап компьютерлер',
+    computerSpecs: 'Intel Core i7, 16GB RAM, SSD',
+    highSpeedInternet: 'Жогорку ылдамдыктагы интернет',
+    internetSpeed: '100 Мбит/с оптоволокно',
+    projectorsBoards: 'Проекторлор жана доскалар',
+    projectorsDesc: 'Интерактивдүү презентациялар',
+    comfortableFurniture: 'Ыңгайлуу эмерек',
+    furnitureDesc: 'Эргономикалык креслолор',
+    twoMonitors: 'Эки монитор',
+    monitorsDesc: 'Ыңгайлуу иштөө үчүн',
+    restArea: 'Эс алуу аймагы',
+    restAreaDesc: 'Кофе жана бош убакыт',
+    mainHall: 'Башкы зал',
+    mainHallSeats: '30 иштөө орду',
+    practiceHall: 'Практика залы',
+    practiceHallSeats: '20 иштөө орду',
+    
+    // CTA
+    readyToStart: 'Окууну баштоого даярсызбы?',
+    joinSuccessfulIT: 'Бизге кошулуп, ийгиликтүү IT коомчулугунун бөлүгү бол!',
+    chooseCourse: 'Курс тандоо',
+    contactUs: 'Биз менен байланышуу',
+    
+    // Contact
+    address: 'Дарек',
+    addressFull: 'Бишкек ш., Примерная көч., 123\nБЦ "IT-Park", 3-кабат',
+    nearMetro: 'Метро "Московская" жанында',
+    phone: 'Телефон',
+    phoneNumber: '+996 XXX XXX XXX',
+    callTime: '9:00дөн 20:00гө чейин чалыңыз',
+    workingHours: 'Иштөө режими',
+    mondayFriday: 'Дүйшөмбү - Жума:',
+    mondayFridayTime: '9:00 - 20:00',
+    saturday: 'Ишемби - Жекшемби:',
+    saturdayTime: '10:00 - 18:00',
   }
 };
 
