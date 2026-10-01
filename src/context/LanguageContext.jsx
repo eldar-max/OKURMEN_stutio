@@ -389,7 +389,7 @@ export const translations = {
 
 export const LanguageProvider = ({ children }) => {
   const [language, setLanguage] = useState(() => {
-    return localStorage.getItem('language') || 'ru';
+    return localStorage.getItem('language') || 'kg'; // Default to Kyrgyz
   });
 
   useEffect(() => {
