@@ -19,12 +19,12 @@ const LanguageSwitcher = () => {
     <div className="relative">
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-300 text-white"
+        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-orange-50 hover:bg-orange-100 transition-all duration-300 text-orange-600 border border-orange-200"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <FiGlobe size={20} />
-        <span className="font-medium">{currentLang.flag} {currentLang.code.toUpperCase()}</span>
+        <FiGlobe size={18} />
+        <span className="font-medium text-sm">{currentLang.flag} {currentLang.code.toUpperCase()}</span>
       </motion.button>
 
       {isOpen && (
