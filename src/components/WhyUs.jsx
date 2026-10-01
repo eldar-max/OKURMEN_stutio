@@ -5,8 +5,10 @@ import {
   FaHandshake, FaRocket, FaUsers, FaAward, FaHeadset, FaClock 
 } from 'react-icons/fa';
 import AnimatedCounter from './AnimatedCounter';
+import { useLanguage } from '../context/LanguageContext';
 
 function WhyUs() {
+  const { t } = useLanguage();
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -15,50 +17,50 @@ function WhyUs() {
   const reasons = [
     {
       icon: FaChalkboardTeacher,
-      title: 'Опытные преподаватели',
-      description: 'Практикующие специалисты с опытом работы в IT-компаниях',
+      title: t('experiencedTeachers'),
+      description: t('experiencedTeachersDesc'),
       color: 'from-blue-500 to-cyan-500',
     },
     {
       icon: FaLaptop,
-      title: 'Современное оборудование',
-      description: 'Новые компьютеры и профессиональное ПО для обучения',
+      title: t('modernEquipment'),
+      description: t('modernEquipmentDesc'),
       color: 'from-purple-500 to-pink-500',
     },
     {
       icon: FaUsers,
-      title: 'Небольшие группы',
-      description: 'До 15 человек - индивидуальный подход к каждому',
+      title: t('smallGroups'),
+      description: t('smallGroupsDesc'),
       color: 'from-green-500 to-emerald-500',
     },
     {
       icon: FaCertificate,
-      title: 'Сертификат',
-      description: 'Официальный сертификат о прохождении курса',
+      title: t('certificate'),
+      description: t('certificateDesc'),
       color: 'from-orange-500 to-red-500',
     },
     {
       icon: FaHandshake,
-      title: 'Помощь с трудоустройством',
-      description: 'Помогаем с резюме и подготовкой к собеседованиям',
+      title: t('jobAssistance'),
+      description: t('jobAssistanceDesc'),
       color: 'from-indigo-500 to-purple-500',
     },
     {
       icon: FaRocket,
-      title: 'Реальные проекты',
-      description: 'Работа над реальными кейсами и портфолио',
+      title: t('realProjects'),
+      description: t('realProjectsDesc'),
       color: 'from-pink-500 to-rose-500',
     },
     {
       icon: FaHeadset,
-      title: 'Поддержка 24/7',
-      description: 'Менторы всегда на связи для помощи',
+      title: t('support247'),
+      description: t('support247Desc'),
       color: 'from-teal-500 to-cyan-500',
     },
     {
       icon: FaClock,
-      title: 'Гибкий график',
-      description: 'Гибридный формат: онлайн и офлайн занятия',
+      title: t('hybridLearning'),
+      description: t('hybridLearningDesc'),
       color: 'from-yellow-500 to-orange-500',
     },
   ];
