@@ -23,9 +23,10 @@ export const translations = {
     // Hero
     heroTitle: 'Образовательная платформа',
     heroSubtitle: 'IT образование нового поколения',
-    heroDescription: 'Обучаем программированию, дизайну и современным технологиям',
-    getStarted: 'Начать обучение',
-    learnMore: 'Подробнее',
+    heroDescription: 'Современная платформа для изучения технологий и создания своего будущего. 3000+ учеников уже с нами!',
+    getStarted: 'Записаться на курс',
+    learnMore: 'Курсы',
+    viewCourses: 'Смотреть курсы',
     
     // About Us
     aboutTitle: 'О нас',
@@ -113,9 +114,10 @@ export const translations = {
     // Hero
     heroTitle: 'Educational Platform',
     heroSubtitle: 'New Generation IT Education',
-    heroDescription: 'We teach programming, design and modern technologies',
-    getStarted: 'Get Started',
-    learnMore: 'Learn More',
+    heroDescription: 'Modern platform for learning technologies and building your future. 3000+ students with us!',
+    getStarted: 'Enroll Now',
+    learnMore: 'Courses',
+    viewCourses: 'View Courses',
     
     // About Us
     aboutTitle: 'About Us',
@@ -202,10 +204,11 @@ export const translations = {
     
     // Hero
     heroTitle: 'Билим берүү платформасы',
-    heroSubtitle: 'Жаңы муундун IT билими',
-    heroDescription: 'Программалоону, дизайнды жана заманбап технологияларды үйрөтөбүз',
-    getStarted: 'Окууну баштоо',
-    learnMore: 'Кененирээк',
+    heroSubtitle: 'Билимден мүмкүнчүлүккө карай',
+    heroDescription: 'Заманбап технологияларды үйрөнүп, өз келечегиңди түзүү үчүн эң мыкты окуу платформасы. 3000+ окуучу биз менен билим алды!',
+    getStarted: 'Курска жазылуу',
+    learnMore: 'Курстар',
+    viewCourses: 'Курстарды көрүү',
     
     // About Us
     aboutTitle: 'Биз жөнүндө',

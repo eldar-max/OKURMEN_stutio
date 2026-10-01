@@ -3,8 +3,10 @@ import { FaGraduationCap, FaBook, FaStar, FaRocket } from 'react-icons/fa';
 import { useState } from 'react';
 import BookingModal from './BookingModal';
 import AnimatedCounter from './AnimatedCounter';
+import { useLanguage } from '../context/LanguageContext';
 
 function Hero() {
+  const { t } = useLanguage();
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
 
   return (
@@ -41,7 +43,7 @@ function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              Билимден мүмкүнчүлүккө карай
+              {t('heroSubtitle')}
             </motion.h2>
 
             <motion.p
@@ -50,7 +52,7 @@ function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
             >
-              Заманбап технологияларды үйрөнүп, өз келечегиңди түзүү үчүн эң мыкты окуу платформасы. 3000+ окуучу биз менен билим алды!
+              {t('heroDescription')}
             </motion.p>
 
             <motion.div
@@ -65,7 +67,7 @@ function Hero() {
                 whileTap={{ scale: 0.95 }}
                 className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-orange-600 rounded-full font-semibold text-base sm:text-lg shadow-xl hover:shadow-2xl transition-all relative overflow-hidden group"
               >
-                <span className="relative z-10">Записаться на курс</span>
+                <span className="relative z-10">{t('getStarted')}</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-50 to-orange-100 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
               </motion.button>
               <motion.a
@@ -74,7 +76,7 @@ function Hero() {
                 whileTap={{ scale: 0.95 }}
                 className="w-full sm:w-auto text-center px-6 sm:px-8 py-3 sm:py-4 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all border-2 border-white hover:bg-white/30"
               >
-                Курстарды көрүү
+                {t('viewCourses')}
               </motion.a>
             </motion.div>
 
