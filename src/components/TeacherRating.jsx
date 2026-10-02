@@ -17,9 +17,9 @@ function TeacherRating() {
   const ratingSystem = [
     {
       icon: FaChalkboardTeacher,
-      titleKg: 'Тренерлер баа коёт',
-      titleRu: 'Тренеры выставляют оценки',
-      titleEn: 'Trainers Set Grades',
+      titleKg: 'Тренерлер баалайт',
+      titleRu: 'Тренеры оценивают',
+      titleEn: 'Trainers Evaluate',
       descKg: 'Ар бир студенттин жетишкендиктерин профессионалдуу баалоо',
       descRu: 'Профессиональная оценка достижений каждого студента',
       descEn: 'Professional evaluation of each student\'s achievements',
@@ -133,12 +133,12 @@ function TeacherRating() {
           </motion.div>
           
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            {language === 'kg' ? 'Тренерлер баа коёт' :
-             language === 'en' ? 'Trainers Set Grades' :
-             'Тренеры выставляют оценки'}
+            {language === 'kg' ? 'Тренерлер студенттерди баалайт' :
+             language === 'en' ? 'Trainers Evaluate Students' :
+             'Тренеры оценивают студентов'}
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            {language === 'kg' ? 'Жакшы окуган жана тапшырмаларды аткарган студенттерге тренерлер жогорку баалар коёт' :
+            {language === 'kg' ? 'Жакшы окуган жана тапшырмаларды аткарган студенттерге тренерлер жогорку баалар берет' :
              language === 'en' ? 'Trainers give high grades to students who study well and complete assignments' :
              'Тренеры ставят высокие оценки студентам, которые хорошо учатся и выполняют задания'}
           </p>
