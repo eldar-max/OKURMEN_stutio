@@ -12,11 +12,14 @@ import Courses from '../components/Courses';
 import Team from '../components/Team';
 import Founders from '../components/Founders';
 import Partners from '../components/Partners';
+import VideoSection from '../components/VideoSection';
+import MobileApp from '../components/MobileApp';
 import OurClassrooms from '../components/OurClassrooms';
 import Students from '../components/Students';
 import Graduates from '../components/Graduates';
 import Testimonials from '../components/Testimonials';
 import FAQ from '../components/FAQ';
+import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import AIChat from '../components/AIChat';
 
@@ -30,17 +33,20 @@ function LandingPage() {
       <Features />
       <Stats />
       <HowItWorks />
+      <VideoSection />
       <TechStack />
       <Pricing />
       <Courses />
       <Team />
       <Founders />
       <Partners />
+      <MobileApp />
       <OurClassrooms />
       <Students />
       <Graduates />
       <Testimonials />
       <FAQ />
+      <Contact />
       <Footer />
       <AIChat />
     </div>
