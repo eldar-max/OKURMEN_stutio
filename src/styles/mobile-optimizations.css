@@ -1,0 +1,172 @@
+/* ============================================
+   OKURMEN - Mobile Responsive Optimizations
+   Professional mobile-first design utilities
+   ============================================ */
+
+/* Base Mobile Optimizations */
+@media (max-width: 640px) {
+  /* Typography */
+  .text-responsive-xs { font-size: 0.75rem; }
+  .text-responsive-sm { font-size: 0.875rem; }
+  .text-responsive-base { font-size: 1rem; }
+  .text-responsive-lg { font-size: 1.125rem; }
+  .text-responsive-xl { font-size: 1.25rem; }
+  .text-responsive-2xl { font-size: 1.5rem; }
+  .text-responsive-3xl { font-size: 1.875rem; }
+  .text-responsive-4xl { font-size: 2.25rem; }
+  
+  /* Spacing */
+  .padding-mobile { padding: 1rem; }
+  .padding-mobile-sm { padding: 0.75rem; }
+  .padding-mobile-lg { padding: 1.5rem; }
+  .margin-mobile { margin: 1rem; }
+  .gap-mobile { gap: 0.75rem; }
+  
+  /* Cards and Containers */
+  .card-mobile {
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+  
+  .container-mobile {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Buttons */
+  .btn-mobile {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    width: 100%;
+  }
+  
+  .btn-mobile-inline {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    display: inline-block;
+    width: auto;
+  }
+  
+  /* Grid Adjustments */
+  .grid-mobile-1 { grid-template-columns: repeat(1, 1fr); }
+  .grid-mobile-2 { grid-template-columns: repeat(2, 1fr); }
+  
+  /* Hero Section Mobile */
+  .hero-mobile-title {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+  
+  .hero-mobile-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+  
+  /* Stats Counter Mobile */
+  .stats-mobile {
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+  
+  .stats-mobile-item {
+    font-size: 1.5rem;
+  }
+  
+  /* Video Player Mobile */
+  .video-mobile {
+    height: 200px;
+    border-radius: 1rem;
+  }
+  
+  /* Form Inputs Mobile */
+  .input-mobile {
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+  
+  /* Modal Mobile */
+  .modal-mobile {
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+}
+
+/* Tablet Optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .grid-tablet-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-tablet-3 { grid-template-columns: repeat(3, 1fr); }
+  
+  .padding-tablet { padding: 1.5rem; }
+  .container-tablet {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* Touch Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Disable hover effects on touch devices */
+  .hover-effect:hover {
+    transform: none;
+  }
+}
+
+/* Landscape Mobile */
+@media (max-width: 896px) and (orientation: landscape) {
+  .landscape-mobile-adjust {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .hero-landscape {
+    min-height: 70vh;
+  }
+}
+
+/* Safe Area Insets for Notched Devices */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+  
+  .safe-top {
+    padding-top: calc(1rem + env(safe-area-inset-top));
+  }
+}
+
+/* Prevent Horizontal Scroll */
+body {
+  overflow-x: hidden;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimize Images for Mobile */
+@media (max-width: 640px) {
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Loading States */
+.loading-mobile {
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-center;
+}
