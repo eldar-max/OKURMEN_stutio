@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaPaperPlane, FaWhatsapp, FaTelegram } from 'react-icons/fa';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaPaperPlane, FaWhatsapp, FaTelegram, FaMapPin } from 'react-icons/fa';
 
 function Contact() {
   const { language } = useLanguage();
@@ -139,10 +139,11 @@ function Contact() {
             viewport={{ once: true }}
             className="space-y-6"
           >
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-              {language === 'kg' ? '📍 Байланыш маалыматы' :
-               language === 'en' ? '📍 Contact Information' :
-               '📍 Контактная информация'}
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+              <FaMapPin className="text-orange-500 text-2xl" />
+              {language === 'kg' ? 'Байланыш маалыматы' :
+               language === 'en' ? 'Contact Information' :
+               'Контактная информация'}
             </h3>
 
             {contactInfo.map((info, index) => {

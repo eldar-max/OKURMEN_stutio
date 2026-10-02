@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
-import { FaCheck, FaStar, FaFire, FaCrown, FaLightbulb } from 'react-icons/fa';
+import { FaCheck, FaStar, FaFire, FaCrown, FaLightbulb, FaDollarSign } from 'react-icons/fa';
 
 function Pricing() {
   const { t, language } = useLanguage();
@@ -115,8 +115,9 @@ function Pricing() {
             transition={{ duration: 0.5 }}
             className="inline-block mb-4"
           >
-            <div className="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-2 rounded-full text-sm font-semibold">
-              {language === 'kg' ? '💰 Баалар' : language === 'en' ? '💰 Pricing' : '💰 Цены'}
+            <div className="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
+              <FaDollarSign className="text-lg" />
+              {language === 'kg' ? 'Баалар' : language === 'en' ? 'Pricing' : 'Цены'}
             </div>
           </motion.div>
           

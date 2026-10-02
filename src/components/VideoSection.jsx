@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { FaPlay, FaTimes } from 'react-icons/fa';
+import { FaPlay, FaTimes, FaTv, FaYoutube } from 'react-icons/fa';
 
 function VideoSection() {
   const { language } = useLanguage();
@@ -187,10 +187,11 @@ function VideoSection() {
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <p className="text-white text-lg mb-6">
-            {language === 'kg' ? '📺 Дагы көптөгөн видеолорду биздин YouTube каналында көрүңүз!' :
-             language === 'en' ? '📺 Watch more videos on our YouTube channel!' :
-             '📺 Смотрите больше видео на нашем YouTube канале!'}
+          <p className="text-white text-lg mb-6 flex items-center justify-center gap-2">
+            <FaTv className="text-orange-500 text-2xl" />
+            {language === 'kg' ? 'Дагы көптөгөн видеолорду биздин YouTube каналында көрүңүз!' :
+             language === 'en' ? 'Watch more videos on our YouTube channel!' :
+             'Смотрите больше видео на нашем YouTube канале!'}
           </p>
           <motion.a
             href="https://youtube.com/@okurmen"
@@ -198,11 +199,12 @@ function VideoSection() {
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-block bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-semibold shadow-lg transition-colors"
+            className="inline-block bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-semibold shadow-lg transition-colors flex items-center gap-3"
           >
-            {language === 'kg' ? '▶️ YouTube каналыбыз' :
-             language === 'en' ? '▶️ Our YouTube Channel' :
-             '▶️ Наш YouTube канал'}
+            <FaYoutube className="text-2xl" />
+            {language === 'kg' ? 'YouTube каналыбыз' :
+             language === 'en' ? 'Our YouTube Channel' :
+             'Наш YouTube канал'}
           </motion.a>
         </motion.div>
       </div>
