@@ -145,11 +145,12 @@ function Partners() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12"
+            className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12 flex items-center justify-center gap-3"
           >
-            {language === 'kg' ? '🤝 Биздин өнөктөштөр' :
-             language === 'en' ? '🤝 Our Partners' :
-             '🤝 Наши партнёры'}
+            <FaHandshake className="text-orange-500 text-4xl" />
+            {language === 'kg' ? 'Биздин өнөктөштөр' :
+             language === 'en' ? 'Our Partners' :
+             'Наши партнёры'}
           </motion.h3>
 
           {/* Partners Carousel */}

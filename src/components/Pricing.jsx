@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
-import { FaCheck, FaStar, FaFire, FaCrown } from 'react-icons/fa';
+import { FaCheck, FaStar, FaFire, FaCrown, FaLightbulb } from 'react-icons/fa';
 
 function Pricing() {
   const { t, language } = useLanguage();
@@ -225,10 +225,11 @@ function Pricing() {
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <p className="text-gray-600 dark:text-gray-400">
-            {language === 'kg' ? '💡 Суроолоруңуз барбы? Биз менен байланышыңыз!' :
-             language === 'en' ? '💡 Have questions? Contact us!' :
-             '💡 Есть вопросы? Свяжитесь с нами!'}
+          <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center gap-2">
+            <FaLightbulb className="text-yellow-500" />
+            {language === 'kg' ? 'Суроолоруңуз барбы? Биз менен байланышыңыз!' :
+             language === 'en' ? 'Have questions? Contact us!' :
+             'Есть вопросы? Свяжитесь с нами!'}
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">
             {language === 'kg' ? '* Баалар өзгөрүшү мүмкүн' :

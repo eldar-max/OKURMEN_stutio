@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
-import { FaUserPlus, FaBookOpen, FaGraduationCap, FaCertificate, FaPencilAlt, FaCheckCircle } from 'react-icons/fa';
+import { FaUserPlus, FaBookOpen, FaGraduationCap, FaCertificate, FaPencilAlt, FaCheckCircle, FaRocket } from 'react-icons/fa';
 
 function HowItWorks() {
   const { language } = useLanguage();
@@ -185,11 +185,12 @@ function HowItWorks() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-12 py-5 rounded-full text-xl font-semibold shadow-2xl hover:shadow-3xl transition-all duration-300"
+            className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-12 py-5 rounded-full text-xl font-semibold shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center gap-3 mx-auto"
           >
-            {language === 'kg' ? '🚀 Башталуу' :
-             language === 'en' ? '🚀 Get Started' :
-             '🚀 Начать обучение'}
+            <FaRocket className="text-2xl" />
+            {language === 'kg' ? 'Башталуу' :
+             language === 'en' ? 'Get Started' :
+             'Начать обучение'}
           </motion.button>
         </motion.div>
       </div>

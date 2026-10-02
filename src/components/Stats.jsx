@@ -1,7 +1,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { FaUsers, FaChalkboardTeacher, FaBook, FaTrophy } from 'react-icons/fa';
+import { FaUsers, FaChalkboardTeacher, FaBook, FaTrophy, FaRocket } from 'react-icons/fa';
 
 function Stats() {
   const { language } = useLanguage();
@@ -170,10 +170,11 @@ function Stats() {
           viewport={{ once: true }}
           className="text-center mt-16"
         >
-          <p className="text-2xl text-white font-semibold">
-            {language === 'kg' ? '🚀 Сиз да бул сандарга кошулуңуз!' :
-             language === 'en' ? '🚀 Join these numbers!' :
-             '🚀 Присоединяйтесь к этим цифрам!'}
+          <p className="text-2xl text-white font-semibold flex items-center justify-center gap-3">
+            <FaRocket className="text-orange-500 text-3xl" />
+            {language === 'kg' ? 'Сиз да бул сандарга кошулуңуз!' :
+             language === 'en' ? 'Join these numbers!' :
+             'Присоединяйтесь к этим цифрам!'}
           </p>
         </motion.div>
       </div>
