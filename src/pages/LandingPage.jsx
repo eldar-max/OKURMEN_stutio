@@ -7,6 +7,7 @@ import Features from '../components/Features';
 import Stats from '../components/Stats';
 import HowItWorks from '../components/HowItWorks';
 import TechStack from '../components/TechStack';
+import TeacherRating from '../components/TeacherRating';
 import Courses from '../components/Courses';
 import Team from '../components/Team';
 import Founders from '../components/Founders';
@@ -34,6 +35,7 @@ function LandingPage() {
       <HowItWorks />
       <VideoSection />
       <TechStack />
+      <TeacherRating />
       <Courses />
       <Team />
       <Founders />
