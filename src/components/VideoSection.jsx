@@ -61,7 +61,7 @@ function VideoSection() {
               <>
                 {/* Thumbnail */}
                 <img
-                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=675&fit=crop"
+                  src="https://img.youtube.com/vi/nR7XkTWi9tM/maxresdefault.jpg"
                   alt="Video Thumbnail"
                   className="w-full h-full object-cover"
                 />
@@ -113,7 +113,7 @@ function VideoSection() {
                 <iframe
                   width="100%"
                   height="100%"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+                  src="https://www.youtube.com/embed/nR7XkTWi9tM?autoplay=1"
                   title="OKURMEN Video"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
