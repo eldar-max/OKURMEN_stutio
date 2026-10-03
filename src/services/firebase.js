@@ -23,6 +23,8 @@ export const db = getFirestore(app);
 export const analytics = getAnalytics(app);
 export const googleProvider = new GoogleAuthProvider();
 export const githubProvider = new GithubAuthProvider();
+// Запрашиваем дополнительные данные профиля из GitHub
+githubProvider.addScope('read:user');
 
 // Включаем оффлайн персистентность (опционально)
 enableIndexedDbPersistence(db).catch((err) => {

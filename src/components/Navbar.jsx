@@ -15,6 +15,7 @@ function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
   const [userRole, setUserRole] = useState('');
+  const [userPhoto, setUserPhoto] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -161,11 +162,26 @@ function Navbar() {
                       : 'bg-gray-100 hover:bg-gray-200'
                   }`}
                 >
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                    userRole === 'admin' 
-                      ? 'bg-white/20 text-white' 
-                      : 'bg-gradient-to-br from-orange-600 to-orange-700 text-white'
-                  }`}>
+                  {/* User Avatar or Initial */}
+                  {userPhoto ? (
+                    <img 
+                      src={userPhoto} 
+                      alt={username}
+                      className="w-8 h-8 rounded-full object-cover"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                  ) : null}
+                  <div 
+                    className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                      userRole === 'admin' 
+                        ? 'bg-white/20 text-white' 
+                        : 'bg-gradient-to-br from-orange-600 to-orange-700 text-white'
+                    }`}
+                    style={{ display: userPhoto ? 'none' : 'flex' }}
+                  >
                     {userRole === 'admin' ? <FaCrown /> : username.charAt(0).toUpperCase()}
                   </div>
                   <span className={`font-semibold ${userRole === 'admin' ? 'text-white' : 'text-gray-800'}`}>
