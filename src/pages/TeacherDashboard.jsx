@@ -15,8 +15,11 @@ function TeacherDashboard() {
   const [showGradeModal, setShowGradeModal] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const [grade, setGrade] = useState('');
-  const [comment, setComment] = useState('');
+  const [gradeData, setGradeData] = useState({
+    grade: '',
+    assignment: '',
+    comment: ''
+  });
   const [newCourse, setNewCourse] = useState({
     name: '',
     description: '',
