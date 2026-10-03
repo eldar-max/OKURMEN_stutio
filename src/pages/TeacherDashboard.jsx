@@ -346,21 +346,32 @@ function TeacherDashboard() {
                   </div>
                 </button>
 
-                <button className="w-full px-6 py-4 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-left flex items-center justify-between transition-colors">
+                <button 
+                  onClick={() => alert('Управление уроками в разработке')}
+                  className="w-full px-6 py-4 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-left flex items-center justify-between transition-colors">
                   <div className="flex items-center space-x-3">
                     <FaBook className="text-xl" />
                     <span className="font-semibold">Управление уроками</span>
                   </div>
                 </button>
 
-                <button className="w-full px-6 py-4 bg-green-50 hover:bg-green-100 text-green-700 rounded-lg text-left flex items-center justify-between transition-colors">
+                <button 
+                  onClick={() => alert('Список студентов в разработке')}
+                  className="w-full px-6 py-4 bg-green-50 hover:bg-green-100 text-green-700 rounded-lg text-left flex items-center justify-between transition-colors">
                   <div className="flex items-center space-x-3">
                     <FaUsers className="text-xl" />
                     <span className="font-semibold">Список студентов</span>
                   </div>
                 </button>
 
-                <button className="w-full px-6 py-4 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg text-left flex items-center justify-between transition-colors">
+                <button 
+                  onClick={() => {
+                    if (window.confirm('Вы уверены, что хотите удалить этот курс?')) {
+                      alert('Курс удален');
+                      setShowManageCourseModal(false);
+                    }
+                  }}
+                  className="w-full px-6 py-4 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg text-left flex items-center justify-between transition-colors">
                   <div className="flex items-center space-x-3">
                     <FaTrash className="text-xl" />
                     <span className="font-semibold">Удалить курс</span>
