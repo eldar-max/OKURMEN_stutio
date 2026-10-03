@@ -89,6 +89,19 @@ function Navbar() {
     }
   };
 
+  // Получить имя пользователя
+  const getUsername = () => {
+    const user = localStorage.getItem('username') || '';
+    const email = localStorage.getItem('userEmail') || '';
+    
+    // Если имя - это email, обрезаем его
+    if (user.includes('@') && user.length > 20) {
+      return user.substring(0, 17) + '...';
+    }
+    
+    return user;
+  };
+
   const menuItems = [
     { name: t('about'), href: '#about' },
     { name: t('courses'), href: '#courses' },
@@ -187,7 +200,7 @@ function Navbar() {
                     {userRole === 'admin' ? <FaCrown /> : username.charAt(0).toUpperCase()}
                   </div>
                   <span className={`font-semibold ${userRole === 'admin' ? 'text-white' : 'text-gray-800 dark:text-white'}`}>
-                    {username}
+                    {getUsername()}
                   </span>
                 </button>
 
