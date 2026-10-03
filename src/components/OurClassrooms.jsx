@@ -1,45 +1,12 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { FaLaptop, FaWifi, FaTv, FaChair, FaDesktop, FaCoffee } from 'react-icons/fa';
-import { useState, useEffect } from 'react';
-import { getClassroomImages, cacheImage, getCachedImage } from '../services/unsplashService';
+import { FaLaptop, FaWifi, FaTv, FaChair, FaDesktop, FaCoffee, FaUsers, FaProjectDiagram, FaComments, FaMugHot } from 'react-icons/fa';
 
 function OurClassrooms() {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
-
-  const [classroomPhotos, setClassroomPhotos] = useState([]);
-
-  // Загрузка профессиональных фотографий классов
-  useEffect(() => {
-    const loadClassroomPhotos = async () => {
-      // Проверяем кэш
-      const cachedPhotos = getCachedImage('classroom_images');
-      if (cachedPhotos) {
-        setClassroomPhotos(JSON.parse(cachedPhotos));
-        return;
-      }
-
-      try {
-        const photos = await getClassroomImages(4);
-        setClassroomPhotos(photos);
-        cacheImage('classroom_images', JSON.stringify(photos));
-      } catch (error) {
-        console.error('Failed to load classroom photos:', error);
-        // Fallback изображения
-        setClassroomPhotos([
-          'https://source.unsplash.com/1200x800/?classroom,modern',
-          'https://source.unsplash.com/1200x800/?office,tech',
-          'https://source.unsplash.com/1200x800/?coworking,space',
-          'https://source.unsplash.com/1200x800/?workspace,computer'
-        ]);
-      }
-    };
-
-    loadClassroomPhotos();
-  }, []);
 
   const facilities = [
     {
@@ -74,23 +41,31 @@ function OurClassrooms() {
     },
   ];
 
-  // Описания классов
+  // Описания классов с иконками
   const classroomInfo = [
     {
       title: 'Главный зал',
       description: '30 рабочих мест',
+      icon: FaUsers,
+      gradient: 'from-blue-500 to-blue-700',
     },
     {
       title: 'Зал для практики',
       description: '20 рабочих мест',
+      icon: FaProjectDiagram,
+      gradient: 'from-purple-500 to-purple-700',
     },
     {
       title: 'Переговорная комната',
       description: 'Для групповых проектов',
+      icon: FaComments,
+      gradient: 'from-green-500 to-green-700',
     },
     {
       title: 'Зона отдыха',
       description: 'Комфортная атмосфера',
+      icon: FaMugHot,
+      gradient: 'from-orange-500 to-orange-700',
     },
   ];
 
@@ -149,27 +124,19 @@ function OurClassrooms() {
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3 + index * 0.15, duration: 0.6 }}
-              whileHover={{ y: -10 }}
+              whileHover={{ y: -10, scale: 1.02 }}
               className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all"
             >
-              <div className="aspect-video bg-gradient-to-br from-blue-200 to-purple-200 relative overflow-hidden">
-                {classroomPhotos[index] ? (
-                  <img
-                    src={classroomPhotos[index]}
-                    alt={classroom.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <FaDesktop className="text-6xl text-gray-400" />
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+              <div className={`aspect-video bg-gradient-to-br ${classroom.gradient} relative overflow-hidden flex items-center justify-center`}>
+                {/* Icon */}
+                <classroom.icon className="text-9xl text-white/30 group-hover:text-white/40 transition-all duration-500 group-hover:scale-110" />
+                
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                 <h3 className="text-2xl font-bold mb-2">{classroom.title}</h3>
-                <p className="text-blue-200">{classroom.description}</p>
+                <p className="text-white/90">{classroom.description}</p>
               </div>
             </motion.div>
           ))}
