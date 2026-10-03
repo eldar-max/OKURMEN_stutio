@@ -6,6 +6,8 @@ import {
   FaMicrophone, FaRobot, FaClock, FaBook, FaDollarSign, FaGift 
 } from 'react-icons/fa';
 import BookingModal from './BookingModal';
+import Pagination from './Pagination';
+import { CourseCardSkeleton, GridSkeleton } from './SkeletonLoader';
 import { useLanguage } from '../context/LanguageContext';
 
 function Courses() {
@@ -18,6 +20,16 @@ function Courses() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
+  const [loading, setLoading] = useState(true);
+
+  // Simulate loading
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, [selectedCategory]);
 
   const handleBooking = (courseId) => {
     setSelectedCourse(courseId);
@@ -86,6 +98,18 @@ function Courses() {
     ? courses 
     : courses.filter(course => course.category === selectedCategory);
 
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentCourses = filteredCourses.slice(startIndex, endIndex);
+
+  // Reset to page 1 when category changes
+  const handleCategoryChange = (categoryId) => {
+    setSelectedCategory(categoryId);
+    setCurrentPage(1);
+  };
+
   return (
     <section id="courses" className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900 dark:to-orange-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -116,7 +140,7 @@ function Courses() {
           {categories.map((category) => (
             <button
               key={category.id}
-              onClick={() => setSelectedCategory(category.id)}
+              onClick={() => handleCategoryChange(category.id)}
               className={`px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-full font-semibold text-sm sm:text-base transition-all ${
                 selectedCategory === category.id
                   ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg scale-105'
@@ -129,8 +153,13 @@ function Courses() {
         </motion.div>
 
         {/* Courses Grid */}
-        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-          {filteredCourses.map((course, index) => (
+        {loading ? (
+          <div className="max-w-5xl mx-auto">
+            <GridSkeleton count={6} SkeletonComponent={CourseCardSkeleton} />
+          </div>
+        ) : (
+          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+          {currentCourses.map((course, index) => (
             <motion.div
               key={course.id}
               initial={{ opacity: 0, y: 30 }}
@@ -188,7 +217,23 @@ function Courses() {
               </div>
             </motion.div>
           ))}
-        </div>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {filteredCourses.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            itemsPerPage={itemsPerPage}
+            totalItems={filteredCourses.length}
+            onItemsPerPageChange={(newValue) => {
+              setItemsPerPage(newValue);
+              setCurrentPage(1);
+            }}
+          />
+        )}
 
         {/* Additional Info */}
         <motion.div

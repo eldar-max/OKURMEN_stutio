@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, sendPasswordResetEmail } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, GithubAuthProvider, signInWithPopup, signOut, sendPasswordResetEmail } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, enableIndexedDbPersistence } from 'firebase/firestore';
 import { getAnalytics } from 'firebase/analytics';
 
@@ -22,6 +22,7 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const analytics = getAnalytics(app);
 export const googleProvider = new GoogleAuthProvider();
+export const githubProvider = new GithubAuthProvider();
 
 // Включаем оффлайн персистентность (опционально)
 enableIndexedDbPersistence(db).catch((err) => {
@@ -36,8 +37,27 @@ enableIndexedDbPersistence(db).catch((err) => {
 export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, googleProvider);
-    const user = result.user;
-    
+    return await processOAuthUser(result.user);
+  } catch (error) {
+    console.error('Error signing in with Google:', error);
+    throw error;
+  }
+};
+
+// GitHub Sign In
+export const signInWithGithub = async () => {
+  try {
+    const result = await signInWithPopup(auth, githubProvider);
+    return await processOAuthUser(result.user);
+  } catch (error) {
+    console.error('Error signing in with GitHub:', error);
+    throw error;
+  }
+};
+
+// Process OAuth User (Google or GitHub)
+const processOAuthUser = async (user) => {
+  try {
     // Проверяем, существует ли пользователь в Firestore
     const userRef = doc(db, 'users', user.uid);
     
@@ -70,7 +90,7 @@ export const signInWithGoogle = async () => {
     
     return { user, userData };
   } catch (error) {
-    console.error('Error signing in with Google:', error);
+    console.error('Error processing OAuth user:', error);
     throw error;
   }
 };

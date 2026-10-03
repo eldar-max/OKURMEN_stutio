@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { signOutUser } from '../services/firebase';
 import StatCard from '../components/StatCard';
 import SimpleChart from '../components/SimpleChart';
+import Pagination from '../components/Pagination';
 
 function AdminDashboard() {
   const navigate = useNavigate();
@@ -15,6 +16,14 @@ function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
+  
+  // Pagination states
+  const [usersPage, setUsersPage] = useState(1);
+  const [usersPerPage, setUsersPerPage] = useState(10);
+  const [coursesPage, setCoursesPage] = useState(1);
+  const [coursesPerPage, setCoursesPerPage] = useState(10);
+  const [paymentsPage, setPaymentsPage] = useState(1);
+  const [paymentsPerPage, setPaymentsPerPage] = useState(10);
 
   // States for data
   const [users, setUsers] = useState([

@@ -5,6 +5,7 @@ import { FaArrowRight } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
 import { getTeamByCategory } from '../data/teamData';
 import { getTeamPortraits, cacheImage, getCachedImage } from '../services/unsplashService';
+import { TeamCardSkeleton, GridSkeleton } from './SkeletonLoader';
 
 function Team() {
   const { t, language } = useLanguage();
@@ -16,15 +17,18 @@ function Team() {
   const [activeTab, setActiveTab] = useState('founders');
   const [selectedMember, setSelectedMember] = useState(null);
   const [teamPhotos, setTeamPhotos] = useState({});
+  const [loading, setLoading] = useState(true);
   const teams = getTeamByCategory();
 
   // Загрузка профессиональных фотографий команды
   useEffect(() => {
     const loadTeamPhotos = async () => {
+      setLoading(true);
       // Проверяем кэш
       const cachedPhotos = getCachedImage('team_portraits_all');
       if (cachedPhotos) {
         setTeamPhotos(JSON.parse(cachedPhotos));
+        setLoading(false);
         return;
       }
 
@@ -48,6 +52,8 @@ function Team() {
         cacheImage('team_portraits_all', JSON.stringify(photosMap));
       } catch (error) {
         console.error('Failed to load team photos:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -137,7 +143,10 @@ function Team() {
         </div>
 
         {/* Team Members Grid */}
-        <motion.div
+        {loading ? (
+          <GridSkeleton count={8} SkeletonComponent={TeamCardSkeleton} />
+        ) : (
+          <motion.div
           key={activeTab}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -192,6 +201,7 @@ function Team() {
             </motion.div>
           ))}
         </motion.div>
+        )}
 
         {/* Modal for Details */}
         {selectedMember && (

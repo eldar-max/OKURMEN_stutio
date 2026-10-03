@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaLock, FaUser, FaEye, FaEyeSlash, FaArrowLeft, FaGoogle, FaTimes, FaEnvelope } from 'react-icons/fa';
-import { signInWithGoogle, resetPassword } from '../services/firebase';
+import { FaLock, FaUser, FaEye, FaEyeSlash, FaArrowLeft, FaGoogle, FaGithub, FaTimes, FaEnvelope } from 'react-icons/fa';
+import { signInWithGoogle, signInWithGithub, resetPassword } from '../services/firebase';
 import logo from '../assets/5309874850258165398_121.jpg';
 import Loader from '../components/Loader';
 import { generateAndSendAdminCode } from '../services/adminCode';
@@ -19,6 +19,7 @@ function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [githubLoading, setGithubLoading] = useState(false);
   
   // Forgot Password Modal
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
@@ -28,11 +29,19 @@ function Login() {
   const [resetError, setResetError] = useState('');
 
   const handleGoogleSignIn = async () => {
+    await handleOAuthSignIn(signInWithGoogle, setGoogleLoading, 'Google');
+  };
+
+  const handleGithubSignIn = async () => {
+    await handleOAuthSignIn(signInWithGithub, setGithubLoading, 'GitHub');
+  };
+
+  const handleOAuthSignIn = async (signInMethod, setLoadingState, providerName) => {
     setError('');
-    setGoogleLoading(true);
+    setLoadingState(true);
 
     try {
-      const { user, userData } = await signInWithGoogle();
+      const { user, userData } = await signInMethod();
       
       // Сохраняем данные в localStorage
       localStorage.setItem('isAuthenticated', 'true');
@@ -71,8 +80,8 @@ function Login() {
         }
       }
     } catch (err) {
-      setError(t('googleLoginError') + err.message);
-      setGoogleLoading(false);
+      setError(`${providerName} login error: ${err.message}`);
+      setLoadingState(false);
     }
   };
 
@@ -248,27 +257,52 @@ function Login() {
           <div className="flex-1 border-t border-gray-300"></div>
         </div>
 
-        {/* Google Sign In */}
-        <motion.button
-          type="button"
-          onClick={handleGoogleSignIn}
-          disabled={googleLoading}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className={`w-full py-3 bg-white border-2 border-gray-300 text-gray-700 rounded-lg font-semibold shadow-md hover:shadow-lg transition-shadow flex items-center justify-center space-x-2 ${
-            googleLoading ? 'opacity-50 cursor-not-allowed' : ''
-          }`}
-        >
-          <FaGoogle className="text-red-500 text-xl" />
-          <span>{googleLoading ? (
-            <span className="flex items-center space-x-2">
-              <Loader size="sm" />
-              <span>{t('loggingIn')}</span>
-            </span>
-          ) : (
-            t('loginWithGoogle')
-          )}</span>
-        </motion.button>
+        {/* OAuth Buttons */}
+        <div className="space-y-3">
+          {/* Google Sign In */}
+          <motion.button
+            type="button"
+            onClick={handleGoogleSignIn}
+            disabled={googleLoading}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`w-full py-3 bg-white border-2 border-gray-300 text-gray-700 rounded-lg font-semibold shadow-md hover:shadow-lg transition-shadow flex items-center justify-center space-x-2 ${
+              googleLoading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+          >
+            <FaGoogle className="text-red-500 text-xl" />
+            <span>{googleLoading ? (
+              <span className="flex items-center space-x-2">
+                <Loader size="sm" />
+                <span>{t('loggingIn')}</span>
+              </span>
+            ) : (
+              t('loginWithGoogle')
+            )}</span>
+          </motion.button>
+
+          {/* GitHub Sign In */}
+          <motion.button
+            type="button"
+            onClick={handleGithubSignIn}
+            disabled={githubLoading}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`w-full py-3 bg-gray-800 text-white rounded-lg font-semibold shadow-md hover:shadow-lg hover:bg-gray-900 transition-all flex items-center justify-center space-x-2 ${
+              githubLoading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+          >
+            <FaGithub className="text-white text-xl" />
+            <span>{githubLoading ? (
+              <span className="flex items-center space-x-2">
+                <Loader size="sm" />
+                <span>{t('loggingIn')}</span>
+              </span>
+            ) : (
+              'Continue with GitHub'
+            )}</span>
+          </motion.button>
+        </div>
 
         {/* Link to Registration */}
         <div className="mt-6 text-center">
