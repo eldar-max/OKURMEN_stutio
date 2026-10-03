@@ -12,7 +12,11 @@ function TeacherDashboard() {
   const [showAddCourseModal, setShowAddCourseModal] = useState(false);
   const [showManageCourseModal, setShowManageCourseModal] = useState(false);
   const [showStatisticsModal, setShowStatisticsModal] = useState(false);
+  const [showGradeModal, setShowGradeModal] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [grade, setGrade] = useState('');
+  const [comment, setComment] = useState('');
   const [newCourse, setNewCourse] = useState({
     name: '',
     description: '',
@@ -33,6 +37,22 @@ function TeacherDashboard() {
   const handleShowStatistics = (course) => {
     setSelectedCourse(course);
     setShowStatisticsModal(true);
+  };
+
+  const handleGradeStudent = (student) => {
+    setSelectedStudent(student);
+    setShowGradeModal(true);
+  };
+
+  const handleSubmitGrade = (e) => {
+    e.preventDefault();
+    console.log('Оценка выставлена:', { 
+      student: selectedStudent.name, 
+      ...gradeData 
+    });
+    alert(`Оценка ${gradeData.grade} успешно выставлена студенту ${selectedStudent.name}!`);
+    setShowGradeModal(false);
+    setGradeData({ grade: '', assignment: '', comment: '' });
   };
 
   const handleAddCourse = () => {
@@ -185,14 +205,25 @@ function TeacherDashboard() {
                       <p className="text-sm text-gray-600">{student.course}</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold text-gray-800">{student.progress}%</p>
-                    <div className="w-16 bg-gray-200 rounded-full h-1.5">
-                      <div
-                        className="bg-gradient-to-r from-blue-600 to-purple-600 h-1.5 rounded-full"
-                        style={{ width: `${student.progress}%` }}
-                      />
+                  <div className="flex items-center space-x-4">
+                    <div className="text-right">
+                      <p className="text-sm font-semibold text-gray-800">{student.progress}%</p>
+                      <div className="w-16 bg-gray-200 rounded-full h-1.5">
+                        <div
+                          className="bg-gradient-to-r from-blue-600 to-purple-600 h-1.5 rounded-full"
+                          style={{ width: `${student.progress}%` }}
+                        />
+                      </div>
                     </div>
+                    <button
+                      onClick={() => {
+                        setSelectedStudent(student);
+                        setShowGradeModal(true);
+                      }}
+                      className="px-3 py-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm rounded-lg hover:shadow-lg transition-shadow"
+                    >
+                      Оценить
+                    </button>
                   </div>
                 </div>
               ))}
@@ -478,6 +509,116 @@ function TeacherDashboard() {
                   Закрыть
                 </button>
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Grade Student Modal */}
+      <AnimatePresence>
+        {showGradeModal && selectedStudent && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+            onClick={() => setShowGradeModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-2xl font-bold text-gray-800">Выставить оценку</h3>
+                <button
+                  onClick={() => setShowGradeModal(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <FaTimes className="text-2xl" />
+                </button>
+              </div>
+
+              <div className="mb-6">
+                <div className="flex items-center space-x-3 bg-gray-50 rounded-lg p-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                    {selectedStudent.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-lg">{selectedStudent.name}</p>
+                    <p className="text-sm text-gray-600">{selectedStudent.course}</p>
+                  </div>
+                </div>
+              </div>
+
+              <form onSubmit={(e) => { 
+                e.preventDefault(); 
+                alert(`Оценка ${gradeData.grade} выставлена студенту ${selectedStudent.name}!`);
+                setShowGradeModal(false);
+                setGradeData({ grade: '', assignment: '', comment: '' });
+              }} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Оценка *
+                  </label>
+                  <select
+                    value={gradeData.grade}
+                    onChange={(e) => setGradeData({ ...gradeData, grade: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    required
+                  >
+                    <option value="">Выберите оценку</option>
+                    <option value="5">5 - Отлично</option>
+                    <option value="4">4 - Хорошо</option>
+                    <option value="3">3 - Удовлетворительно</option>
+                    <option value="2">2 - Неудовлетворительно</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    За задание
+                  </label>
+                  <input
+                    type="text"
+                    value={gradeData.assignment}
+                    onChange={(e) => setGradeData({ ...gradeData, assignment: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    placeholder="например: Домашнее задание №5"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Комментарий
+                  </label>
+                  <textarea
+                    value={gradeData.comment}
+                    onChange={(e) => setGradeData({ ...gradeData, comment: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                    rows="4"
+                    placeholder="Добавьте комментарий для студента..."
+                  />
+                </div>
+
+                <div className="flex space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowGradeModal(false)}
+                    className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    Отмена
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 px-4 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg hover:shadow-lg transition-shadow font-semibold"
+                  >
+                    Выставить оценку
+                  </button>
+                </div>
+              </form>
             </motion.div>
           </motion.div>
         )}
