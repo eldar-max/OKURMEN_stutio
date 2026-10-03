@@ -77,6 +77,8 @@ function TeacherDashboard() {
     { id: 3, name: 'Нурбек К.', course: 'React Advanced', progress: 45 },
   ];
 
+  const [studentsState, setStudentsState] = useState(students);
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -197,7 +199,7 @@ function TeacherDashboard() {
           <div className="bg-white rounded-xl shadow-lg p-6">
             <h2 className="text-xl font-bold mb-4">Мои студенты</h2>
             <div className="space-y-3">
-              {students.map((student) => (
+              {studentsState.map((student) => (
                 <div key={student.id} className="flex items-center justify-between p-3 border-b hover:bg-gray-50 rounded-lg">
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
@@ -557,8 +559,32 @@ function TeacherDashboard() {
               </div>
 
               <form onSubmit={(e) => { 
-                e.preventDefault(); 
-                alert(`Оценка ${gradeData.grade} выставлена студенту ${selectedStudent.name}!`);
+                e.preventDefault();
+                
+                // Вычисляем изменение прогресса в зависимости от оценки
+                let progressChange = 0;
+                if (gradeData.grade === '5') {
+                  progressChange = 10; // Отлично: +10%
+                } else if (gradeData.grade === '4') {
+                  progressChange = 5;  // Хорошо: +5%
+                } else if (gradeData.grade === '3') {
+                  progressChange = -3; // Удовлетворительно: -3%
+                } else if (gradeData.grade === '2') {
+                  progressChange = -5; // Неудовлетворительно: -5%
+                }
+                
+                // Обновляем прогресс студента
+                setStudentsState(studentsState.map(s => {
+                  if (s.id === selectedStudent.id) {
+                    let newProgress = s.progress + progressChange;
+                    // Ограничиваем прогресс от 0 до 100
+                    newProgress = Math.max(0, Math.min(100, newProgress));
+                    return { ...s, progress: newProgress };
+                  }
+                  return s;
+                }));
+                
+                alert(`Оценка ${gradeData.grade} выставлена студенту ${selectedStudent.name}!\nПрогресс: ${selectedStudent.progress}% → ${Math.max(0, Math.min(100, selectedStudent.progress + progressChange))}% (${progressChange > 0 ? '+' : ''}${progressChange}%)`);
                 setShowGradeModal(false);
                 setGradeData({ grade: '', assignment: '', comment: '' });
               }} className="space-y-4">
