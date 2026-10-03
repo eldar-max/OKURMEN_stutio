@@ -80,7 +80,20 @@ function Login() {
         }
       }
     } catch (err) {
-      setError(`${providerName} login error: ${err.message}`);
+      console.error(`${providerName} login error:`, err);
+      
+      // Проверяем специфичные ошибки
+      if (err.message && err.message.includes('email')) {
+        setError(err.message);
+      } else if (err.code === 'auth/popup-closed-by-user') {
+        setError(t('loginCancelled') || 'Кириш жокко чыгарылды / Вход отменён / Login cancelled');
+      } else if (err.code === 'auth/cancelled-popup-request') {
+        // Просто игнорируем эту ошибку (множественные клики)
+        return;
+      } else {
+        setError(`${providerName} ${t('loginError') || 'login error'}: ${err.message}`);
+      }
+    } finally {
       setLoadingState(false);
     }
   };

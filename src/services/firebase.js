@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, GithubAuthProvider, signInWithPopup, signOut, sendPasswordResetEmail } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, GithubAuthProvider, signInWithPopup, signOut, sendPasswordResetEmail, fetchSignInMethodsForEmail, linkWithCredential } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, enableIndexedDbPersistence } from 'firebase/firestore';
 import { getAnalytics } from 'firebase/analytics';
 
@@ -44,12 +44,32 @@ export const signInWithGoogle = async () => {
   }
 };
 
-// GitHub Sign In
+// GitHub Sign In with account linking
 export const signInWithGithub = async () => {
   try {
     const result = await signInWithPopup(auth, githubProvider);
     return await processOAuthUser(result.user);
   } catch (error) {
+    // Если email уже используется другим провайдером
+    if (error.code === 'auth/account-exists-with-different-credential') {
+      const email = error.customData.email;
+      const credential = GithubAuthProvider.credentialFromError(error);
+      
+      // Получаем методы входа для этого email
+      const methods = await fetchSignInMethodsForEmail(auth, email);
+      
+      // Если есть Google провайдер, предлагаем войти через Google и связать аккаунты
+      if (methods.includes('google.com')) {
+        throw new Error(
+          'КГ: Бул email Google аркылуу катталган. Адегенде Google менен кириңиз.\n' +
+          'RU: Этот email зарегистрирован через Google. Сначала войдите через Google.\n' +
+          'EN: This email is registered with Google. Please sign in with Google first.'
+        );
+      }
+      
+      throw error;
+    }
+    
     console.error('Error signing in with GitHub:', error);
     throw error;
   }
