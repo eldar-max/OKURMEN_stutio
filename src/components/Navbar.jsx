@@ -44,6 +44,7 @@ function Navbar() {
       const auth = localStorage.getItem('isAuthenticated') === 'true';
       const user = localStorage.getItem('username') || '';
       const email = localStorage.getItem('userEmail') || '';
+      const photo = localStorage.getItem('userPhoto') || '';
       let role = localStorage.getItem('userRole') || '';
       
       // Проверяем, если это админ
@@ -55,6 +56,7 @@ function Navbar() {
       setIsAuthenticated(auth);
       setUsername(user);
       setUserRole(role);
+      setUserPhoto(photo);
     };
 
     checkAuth();

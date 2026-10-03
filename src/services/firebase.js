@@ -50,6 +50,30 @@ export const signInWithGoogle = async () => {
 export const signInWithGithub = async () => {
   try {
     const result = await signInWithPopup(auth, githubProvider);
+    
+    // Получаем GitHub username и avatar
+    const credential = GithubAuthProvider.credentialFromResult(result);
+    const githubToken = credential?.accessToken;
+    
+    // Если есть токен, получаем дополнительные данные профиля
+    if (githubToken && !result.user.photoURL) {
+      try {
+        const response = await fetch('https://api.github.com/user', {
+          headers: {
+            'Authorization': `token ${githubToken}`
+          }
+        });
+        const githubData = await response.json();
+        
+        // Добавляем avatar_url к объекту пользователя
+        if (githubData.avatar_url) {
+          result.user.photoURL = githubData.avatar_url;
+        }
+      } catch (apiError) {
+        console.warn('Could not fetch GitHub avatar:', apiError);
+      }
+    }
+    
     return await processOAuthUser(result.user);
   } catch (error) {
     // Если email уже используется другим провайдером - автоматически связываем
@@ -109,7 +133,7 @@ const processOAuthUser = async (user) => {
           uid: user.uid,
           email: user.email,
           displayName: user.displayName,
-          photoURL: user.photoURL,
+          photoURL: user.photoURL || `https://github.com/${user.reloadUserInfo?.screenName}.png` || '',
           role: 'student', // По умолчанию студент
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
@@ -119,6 +143,11 @@ const processOAuthUser = async (user) => {
         userData = newUserData;
       } else {
         userData = userSnap.data();
+        // Обновляем photoURL если его не было
+        if (!userData.photoURL && user.photoURL) {
+          await setDoc(userRef, { photoURL: user.photoURL }, { merge: true });
+          userData.photoURL = user.photoURL;
+        }
       }
     } catch (firestoreError) {
       console.warn('Firestore offline or not configured, using default role:', firestoreError);
