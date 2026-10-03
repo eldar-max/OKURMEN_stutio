@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
 import { getTeamByCategory } from '../data/teamData';
+import { getTeamPortraits, cacheImage, getCachedImage } from '../services/unsplashService';
 
 function Team() {
   const { t, language } = useLanguage();
@@ -14,7 +15,44 @@ function Team() {
 
   const [activeTab, setActiveTab] = useState('founders');
   const [selectedMember, setSelectedMember] = useState(null);
+  const [teamPhotos, setTeamPhotos] = useState({});
   const teams = getTeamByCategory();
+
+  // Загрузка профессиональных фотографий команды
+  useEffect(() => {
+    const loadTeamPhotos = async () => {
+      // Проверяем кэш
+      const cachedPhotos = getCachedImage('team_portraits_all');
+      if (cachedPhotos) {
+        setTeamPhotos(JSON.parse(cachedPhotos));
+        return;
+      }
+
+      try {
+        // Получаем 21 профессиональное фото
+        const photos = await getTeamPortraits(21);
+        const photosMap = {};
+        
+        // Распределяем фото по членам команды
+        let photoIndex = 0;
+        Object.values(teams).forEach(teamCategory => {
+          teamCategory.forEach(member => {
+            if (photos[photoIndex]) {
+              photosMap[member.id] = photos[photoIndex];
+              photoIndex++;
+            }
+          });
+        });
+
+        setTeamPhotos(photosMap);
+        cacheImage('team_portraits_all', JSON.stringify(photosMap));
+      } catch (error) {
+        console.error('Failed to load team photos:', error);
+      }
+    };
+
+    loadTeamPhotos();
+  }, []);
 
   // Получить имя в зависимости от языка
   const getName = (member) => {
@@ -116,21 +154,20 @@ function Team() {
             >
               {/* Image Container */}
               <div className="relative h-64 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 overflow-hidden">
-                <img
-                  src={member.photo}
-                  alt={getName(member)}
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.parentElement.innerHTML = `
-                      <div class="w-full h-full flex items-center justify-center text-6xl text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-32 h-32">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                        </svg>
-                      </div>
-                    `;
-                  }}
-                />
+                {teamPhotos[member.id] ? (
+                  <img
+                    src={teamPhotos[member.id]}
+                    alt={getName(member)}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-all duration-300"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-32 h-32">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    </svg>
+                  </div>
+                )}
               </div>
 
               {/* Info Container with Blue Gradient */}
@@ -173,11 +210,19 @@ function Team() {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start gap-6 mb-6">
-                <img
-                  src={selectedMember.photo}
-                  alt={getName(selectedMember)}
-                  className="w-32 h-32 rounded-xl object-cover"
-                />
+                {teamPhotos[selectedMember.id] ? (
+                  <img
+                    src={teamPhotos[selectedMember.id]}
+                    alt={getName(selectedMember)}
+                    className="w-32 h-32 rounded-xl object-cover"
+                  />
+                ) : (
+                  <div className="w-32 h-32 rounded-xl bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-16 h-16 text-gray-400">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    </svg>
+                  </div>
+                )}
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                     {getName(selectedMember)}

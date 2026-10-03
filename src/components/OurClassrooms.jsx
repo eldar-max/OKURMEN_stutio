@@ -1,12 +1,45 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaLaptop, FaWifi, FaTv, FaChair, FaDesktop, FaCoffee } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+import { getClassroomImages, cacheImage, getCachedImage } from '../services/unsplashService';
 
 function OurClassrooms() {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  const [classroomPhotos, setClassroomPhotos] = useState([]);
+
+  // Загрузка профессиональных фотографий классов
+  useEffect(() => {
+    const loadClassroomPhotos = async () => {
+      // Проверяем кэш
+      const cachedPhotos = getCachedImage('classroom_images');
+      if (cachedPhotos) {
+        setClassroomPhotos(JSON.parse(cachedPhotos));
+        return;
+      }
+
+      try {
+        const photos = await getClassroomImages(4);
+        setClassroomPhotos(photos);
+        cacheImage('classroom_images', JSON.stringify(photos));
+      } catch (error) {
+        console.error('Failed to load classroom photos:', error);
+        // Fallback изображения
+        setClassroomPhotos([
+          'https://source.unsplash.com/1200x800/?classroom,modern',
+          'https://source.unsplash.com/1200x800/?office,tech',
+          'https://source.unsplash.com/1200x800/?coworking,space',
+          'https://source.unsplash.com/1200x800/?workspace,computer'
+        ]);
+      }
+    };
+
+    loadClassroomPhotos();
+  }, []);
 
   const facilities = [
     {
@@ -41,27 +74,23 @@ function OurClassrooms() {
     },
   ];
 
-  // Placeholder изображения (замените на реальные фото)
-  const classroomImages = [
+  // Описания классов
+  const classroomInfo = [
     {
       title: 'Главный зал',
       description: '30 рабочих мест',
-      image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
     },
     {
       title: 'Зал для практики',
       description: '20 рабочих мест',
-      image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80',
     },
     {
       title: 'Переговорная комната',
       description: 'Для групповых проектов',
-      image: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80',
     },
     {
       title: 'Зона отдыха',
       description: 'Комфортная атмосфера',
-      image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800&q=80',
     },
   ];
 
@@ -114,7 +143,7 @@ function OurClassrooms() {
 
         {/* Classroom Images */}
         <div className="grid md:grid-cols-2 gap-6">
-          {classroomImages.map((classroom, index) => (
+          {classroomInfo.map((classroom, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}
@@ -124,12 +153,18 @@ function OurClassrooms() {
               className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all"
             >
               <div className="aspect-video bg-gradient-to-br from-blue-200 to-purple-200 relative overflow-hidden">
-                <img
-                  src={classroom.image}
-                  alt={classroom.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  loading="lazy"
-                />
+                {classroomPhotos[index] ? (
+                  <img
+                    src={classroomPhotos[index]}
+                    alt={classroom.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <FaDesktop className="text-6xl text-gray-400" />
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
@@ -261,7 +296,7 @@ function OurClassrooms() {
           </div>
         </motion.div>
 
-        {/* Note */}
+        {/* Note - Remove after testing */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
@@ -269,7 +304,7 @@ function OurClassrooms() {
           className="mt-8 text-center"
         >
           <p className="text-gray-600 dark:text-gray-400 bg-orange-50 dark:bg-orange-900 inline-block px-6 py-3 rounded-full">
-            <strong>Примечание:</strong> Изображения классов - примеры. Замените на реальные фото ваших аудиторий.
+            ✅ <strong>Профессиональные изображения загружены из Unsplash API</strong>
           </p>
         </motion.div>
       </div>

@@ -1,13 +1,36 @@
 import { motion } from 'framer-motion';
 import { FaGraduationCap, FaBook, FaStar, FaRocket } from 'react-icons/fa';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BookingModal from './BookingModal';
 import AnimatedCounter from './AnimatedCounter';
 import { useLanguage } from '../context/LanguageContext';
+import { getRandomImage, cacheImage, getCachedImage } from '../services/unsplashService';
 
 function Hero() {
   const { t } = useLanguage();
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [heroImage, setHeroImage] = useState(getCachedImage('hero_main') || null);
+
+  useEffect(() => {
+    // Загружаем профессиональное изображение из Unsplash
+    const loadHeroImage = async () => {
+      try {
+        const imageUrl = await getRandomImage('education,technology,students,learning', {
+          width: 1200,
+          height: 800,
+          orientation: 'landscape'
+        });
+        setHeroImage(imageUrl);
+        cacheImage('hero_main', imageUrl);
+      } catch (error) {
+        console.error('Failed to load hero image:', error);
+      }
+    };
+
+    if (!heroImage) {
+      loadHeroImage();
+    }
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-gradient-to-br from-orange-400 to-orange-600 dark:from-orange-800 dark:to-orange-900 transition-colors">
@@ -117,7 +140,7 @@ function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Illustration */}
+          {/* Right Content - Professional Image */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -125,12 +148,24 @@ function Hero() {
             className="relative hidden md:block"
           >
             <div className="relative w-full h-[400px] lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-300 via-orange-400 to-orange-500 opacity-90" />
+              {heroImage ? (
+                <>
+                  <img 
+                    src={heroImage} 
+                    alt="OKURMEN Education" 
+                    className="absolute inset-0 w-full h-full object-cover"
+                    loading="eager"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-600/80 via-orange-500/70 to-orange-400/60" />
+                </>
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-300 via-orange-400 to-orange-500" />
+              )}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-white text-center p-8">
-                  <FaGraduationCap className="text-7xl lg:text-9xl mb-6 mx-auto" />
-                  <div className="text-2xl lg:text-3xl font-bold mb-2">Гибриддик окуу</div>
-                  <div className="text-base lg:text-lg">Онлайн + Ментор колдоо</div>
+                  <FaGraduationCap className="text-7xl lg:text-9xl mb-6 mx-auto drop-shadow-2xl" />
+                  <div className="text-2xl lg:text-3xl font-bold mb-2 drop-shadow-lg">Гибриддик окуу</div>
+                  <div className="text-base lg:text-lg drop-shadow-md">Онлайн + Ментор колдоо</div>
                 </div>
               </div>
             </div>
