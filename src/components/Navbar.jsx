@@ -195,11 +195,13 @@ function Navbar() {
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50"
+                    className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 py-2 z-50"
                   >
-                    <div className="px-4 py-2 border-b border-gray-100">
-                      <p className="font-semibold text-gray-800">{username}</p>
-                      <p className="text-xs text-gray-600 flex items-center">
+                    <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+                      <p className="font-semibold text-gray-800 dark:text-white truncate" title={username}>
+                        {username}
+                      </p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 flex items-center mt-1">
                         {userRole === 'admin' ? (
                           <>
                             <FaCrown className="mr-1 text-orange-600" />
@@ -214,14 +216,14 @@ function Navbar() {
                     </div>
                     <button
                       onClick={handleProfileClick}
-                      className="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center space-x-2"
+                      className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2 text-gray-700 dark:text-gray-300"
                     >
-                      {userRole === 'admin' ? <FaCrown className="text-orange-600" /> : <FaUserCircle className="text-gray-600" />}
+                      {userRole === 'admin' ? <FaCrown className="text-orange-600" /> : <FaUserCircle className="text-gray-600 dark:text-gray-400" />}
                       <span>{userRole === 'admin' ? 'Админ-панель' : 'Мой кабинет'}</span>
                     </button>
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 flex items-center space-x-2"
+                      className="w-full text-left px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 flex items-center space-x-2"
                     >
                       <FaSignOutAlt />
                       <span>Выйти</span>
