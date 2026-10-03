@@ -44,27 +44,43 @@ export const signInWithGoogle = async () => {
   }
 };
 
-// GitHub Sign In with account linking
+// GitHub Sign In with automatic account linking
 export const signInWithGithub = async () => {
   try {
     const result = await signInWithPopup(auth, githubProvider);
     return await processOAuthUser(result.user);
   } catch (error) {
-    // Если email уже используется другим провайдером
+    // Если email уже используется другим провайдером - автоматически связываем
     if (error.code === 'auth/account-exists-with-different-credential') {
-      const email = error.customData.email;
-      const credential = GithubAuthProvider.credentialFromError(error);
+      const email = error.customData?.email;
+      const pendingCredential = GithubAuthProvider.credentialFromError(error);
+      
+      if (!email || !pendingCredential) {
+        throw error;
+      }
       
       // Получаем методы входа для этого email
       const methods = await fetchSignInMethodsForEmail(auth, email);
       
-      // Если есть Google провайдер, предлагаем войти через Google и связать аккаунты
+      // Если есть Google провайдер, входим через Google и связываем
       if (methods.includes('google.com')) {
-        throw new Error(
-          'КГ: Бул email Google аркылуу катталган. Адегенде Google менен кириңиз.\n' +
-          'RU: Этот email зарегистрирован через Google. Сначала войдите через Google.\n' +
-          'EN: This email is registered with Google. Please sign in with Google first.'
-        );
+        try {
+          // Входим через Google
+          const googleResult = await signInWithPopup(auth, googleProvider);
+          
+          // Связываем GitHub credential с текущим аккаунтом
+          await linkWithCredential(googleResult.user, pendingCredential);
+          
+          // Возвращаем пользователя
+          return await processOAuthUser(googleResult.user);
+        } catch (linkError) {
+          console.error('Error linking accounts:', linkError);
+          throw new Error(
+            'КГ: Аккаунттарды байланыштыруу мүмкүн болбоду. Google менен кириңиз.\n' +
+            'RU: Не удалось связать аккаунты. Войдите через Google.\n' +
+            'EN: Failed to link accounts. Please sign in with Google.'
+          );
+        }
       }
       
       throw error;
