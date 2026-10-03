@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   FaLaptopCode, FaServer, FaPaintBrush, FaLanguage, 
   FaMicrophone, FaRobot, FaClock, FaBook, FaDollarSign, FaGift 
