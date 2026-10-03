@@ -1,11 +1,15 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
 import { getTeamByCategory } from '../data/teamData';
-import { getTeamPortraits, cacheImage, getCachedImage } from '../services/unsplashService';
-import { TeamCardSkeleton, GridSkeleton } from './SkeletonLoader';
+
+// Import local team photos
+import teamPhoto1 from '../assets/team/530bdc66-d4ea-439c-acc6-48fe2bfadc33.jpeg';
+import teamPhoto2 from '../assets/team/4099f4f0-016a-457f-a49f-9d16a359d8e8.jpeg';
+import teamPhoto3 from '../assets/team/06515d10-e139-4aed-8c83-123083a7c5b6.jpeg';
+import teamPhoto4 from '../assets/team/b78262f4-0712-45e7-80fb-90573bb5f80f.jpeg';
 
 function Team() {
   const { t, language } = useLanguage();
@@ -16,49 +20,16 @@ function Team() {
 
   const [activeTab, setActiveTab] = useState('founders');
   const [selectedMember, setSelectedMember] = useState(null);
-  const [teamPhotos, setTeamPhotos] = useState({});
-  const [loading, setLoading] = useState(true);
+  
   const teams = getTeamByCategory();
 
-  // Загрузка профессиональных фотографий команды
-  useEffect(() => {
-    const loadTeamPhotos = async () => {
-      setLoading(true);
-      // Проверяем кэш
-      const cachedPhotos = getCachedImage('team_portraits_all');
-      if (cachedPhotos) {
-        setTeamPhotos(JSON.parse(cachedPhotos));
-        setLoading(false);
-        return;
-      }
-
-      try {
-        // Получаем 21 профессиональное фото
-        const photos = await getTeamPortraits(21);
-        const photosMap = {};
-        
-        // Распределяем фото по членам команды
-        let photoIndex = 0;
-        Object.values(teams).forEach(teamCategory => {
-          teamCategory.forEach(member => {
-            if (photos[photoIndex]) {
-              photosMap[member.id] = photos[photoIndex];
-              photoIndex++;
-            }
-          });
-        });
-
-        setTeamPhotos(photosMap);
-        cacheImage('team_portraits_all', JSON.stringify(photosMap));
-      } catch (error) {
-        console.error('Failed to load team photos:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadTeamPhotos();
-  }, []);
+  // Local team photos array
+  const localPhotos = [teamPhoto1, teamPhoto2, teamPhoto3, teamPhoto4];
+  
+  // Map team members to local photos
+  const getTeamPhoto = (index) => {
+    return localPhotos[index % localPhotos.length];
+  };
 
   // Получить имя в зависимости от языка
   const getName = (member) => {
@@ -173,10 +144,7 @@ function Team() {
         </div>
 
         {/* Team Members Grid */}
-        {loading ? (
-          <GridSkeleton count={8} SkeletonComponent={TeamCardSkeleton} />
-        ) : (
-          <motion.div
+        <motion.div
           key={activeTab}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -200,20 +168,12 @@ function Team() {
               >
                 {/* Team Member Photo */}
                 <div className="relative w-48 h-64 sm:w-56 sm:h-80 md:w-64 md:h-96 overflow-hidden">
-                  {teamPhotos[member.id] ? (
-                    <img
-                      src={teamPhotos[member.id]}
-                      alt={getName(member)}
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gray-300 dark:bg-gray-700 flex items-center justify-center grayscale">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-32 h-32 text-gray-400">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                      </svg>
-                    </div>
-                  )}
+                  <img
+                    src={getTeamPhoto(index)}
+                    alt={getName(member)}
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
                   
                   {/* Hover Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
@@ -255,7 +215,6 @@ function Team() {
             </motion.div>
           )}
         </motion.div>
-        )}
 
         {/* Modal for All Team Members */}
         {selectedMember && (
@@ -297,23 +256,15 @@ function Team() {
 
                 {/* Grid of All Team Members */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                  {getCurrentTeam().map((member) => (
+                  {getCurrentTeam().map((member, index) => (
                     <div key={member.id} className="text-center group">
                       <div className="relative w-full aspect-[3/4] mb-3 overflow-hidden rounded-lg">
-                        {teamPhotos[member.id] ? (
-                          <img
-                            src={teamPhotos[member.id]}
-                            alt={getName(member)}
-                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
-                            loading="lazy"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-16 h-16 text-gray-400">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                            </svg>
-                          </div>
-                        )}
+                        <img
+                          src={getTeamPhoto(index)}
+                          alt={getName(member)}
+                          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                          loading="lazy"
+                        />
                       </div>
                       <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-1">
                         {getName(member)}
