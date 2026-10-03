@@ -161,7 +161,7 @@ function Navbar() {
                   className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-colors ${
                     userRole === 'admin' 
                       ? 'bg-gradient-to-r from-orange-600 to-orange-700 text-white hover:shadow-lg' 
-                      : 'bg-gray-100 hover:bg-gray-200'
+                      : 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
                   }`}
                 >
                   {/* User Avatar or Initial */}
@@ -186,7 +186,7 @@ function Navbar() {
                   >
                     {userRole === 'admin' ? <FaCrown /> : username.charAt(0).toUpperCase()}
                   </div>
-                  <span className={`font-semibold ${userRole === 'admin' ? 'text-white' : 'text-gray-800'}`}>
+                  <span className={`font-semibold ${userRole === 'admin' ? 'text-white' : 'text-gray-800 dark:text-white'}`}>
                     {username}
                   </span>
                 </button>
