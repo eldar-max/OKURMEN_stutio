@@ -11,7 +11,7 @@ import { useLanguage } from '../context/LanguageContext';
 function Navbar() {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
   const [userRole, setUserRole] = useState('');
@@ -111,6 +111,8 @@ function Navbar() {
     { name: t('contacts'), href: '#contact' },
   ];
 
+  const aiChatText = language === 'kg' ? 'AI Чат' : language === 'en' ? 'AI Chat' : 'AI Чат';
+
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -149,6 +151,18 @@ function Navbar() {
 
           {/* CTA Button - Right */}
           <div className="hidden md:flex items-center space-x-2 lg:space-x-3">
+            {/* AI Chat Button */}
+            <Link to="/ai-chat">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black rounded-full font-semibold shadow-lg hover:shadow-yellow-500/50 transition-all flex items-center space-x-2"
+              >
+                <span className="text-xl">🤖</span>
+                <span>{aiChatText}</span>
+              </motion.button>
+            </Link>
+            
             {/* Language Switcher */}
             <LanguageSwitcher />
             

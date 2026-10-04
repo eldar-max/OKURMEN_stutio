@@ -6,6 +6,7 @@ import StudentDashboard from './pages/StudentDashboard';
 import TeacherDashboard from './pages/TeacherDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminVerification from './pages/AdminVerification';
+import AIChat from './pages/AIChat';
 import NotFound from './pages/NotFound';
 import PageLoader from './components/PageLoader';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -44,6 +45,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/registration" element={<Registration />} />
             <Route path="/admin-verification" element={<AdminVerification />} />
+            <Route path="/ai-chat" element={<AIChat />} />
             <Route
               path="/student"
               element={
