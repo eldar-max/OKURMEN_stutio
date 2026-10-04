@@ -456,6 +456,11 @@ export const translations = {
       }
     },
     
+    // Common
+    students: 'Студенттер',
+    teachers: 'Мугалимдер',
+    years: 'Жыл тажрыйба',
+    
     // Courses
     coursesTitle: 'Биздин курстар',
     coursesSubtitle: 'Окуу багытын тандаңыз',
