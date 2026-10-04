@@ -28,6 +28,7 @@ function AIChat() {
   
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const [chatHistory, setChatHistory] = useState([
     {
       id: 1,
@@ -147,6 +148,67 @@ function AIChat() {
   const handleQuickPrompt = (prompt) => {
     const text = language === 'kg' ? prompt.textKg : language === 'en' ? prompt.textEn : prompt.textRu;
     setInputText(text);
+  };
+
+  const handleVoiceInput = () => {
+    // Проверяем поддержку браузера
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      alert(
+        language === 'kg' 
+          ? 'Үн тааныштыруу колдоого алынбайт. Chrome же Edge браузерин колдонуңуз.'
+          : language === 'en'
+          ? 'Voice recognition is not supported. Please use Chrome or Edge browser.'
+          : 'Распознавание голоса не поддерживается. Используйте Chrome или Edge.'
+      );
+      return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+
+    // Настройки распознавания
+    recognition.lang = language === 'kg' ? 'ky-KG' : language === 'en' ? 'en-US' : 'ru-RU';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setInputText(transcript);
+      setIsListening(false);
+    };
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+      setIsListening(false);
+      
+      if (event.error === 'no-speech') {
+        alert(
+          language === 'kg' 
+            ? 'Үн табылган жок. Кайра аракет кылыңыз.'
+            : language === 'en'
+            ? 'No speech detected. Please try again.'
+            : 'Голос не обнаружен. Попробуйте снова.'
+        );
+      } else if (event.error === 'not-allowed') {
+        alert(
+          language === 'kg' 
+            ? 'Микрофонго уруксат берилген жок. Браузердин жөндөөлөрүндө уруксат бериңиз.'
+            : language === 'en'
+            ? 'Microphone access denied. Please allow microphone access in browser settings.'
+            : 'Доступ к микрофону запрещен. Разрешите доступ в настройках браузера.'
+        );
+      }
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.start();
   };
 
   const handleNewChat = () => {
@@ -396,9 +458,21 @@ function AIChat() {
               />
               
               <motion.button
+                onClick={handleVoiceInput}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="p-3 bg-gray-700 text-gray-400 rounded-xl hover:bg-gray-600 transition-colors"
+                className={`p-3 rounded-xl transition-all ${
+                  isListening 
+                    ? 'bg-red-600 text-white animate-pulse' 
+                    : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
+                }`}
+                title={
+                  language === 'kg' 
+                    ? 'Үн менен айтыңыз'
+                    : language === 'en'
+                    ? 'Speak your message'
+                    : 'Говорите ваше сообщение'
+                }
               >
                 <FaMicrophone className="text-xl" />
               </motion.button>
