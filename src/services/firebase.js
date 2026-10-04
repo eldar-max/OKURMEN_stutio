@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, GithubAuthProvider, signInWithPopup, signOut, sendPasswordResetEmail, fetchSignInMethodsForEmail, linkWithCredential } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, GithubAuthProvider, signInWithPopup, signOut, sendPasswordResetEmail, fetchSignInMethodsForEmail, linkWithCredential, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, enableIndexedDbPersistence } from 'firebase/firestore';
 import { getAnalytics } from 'firebase/analytics';
 
@@ -225,6 +225,65 @@ export const resetPassword = async (email) => {
       errorMessage = 'Неверный формат email';
     } else if (error.code === 'auth/too-many-requests') {
       errorMessage = 'Слишком много попыток. Попробуйте позже';
+    }
+    
+    throw new Error(errorMessage);
+  }
+};
+
+// Sign In with Email and Password
+export const signInWithEmail = async (email, password) => {
+  try {
+    const result = await signInWithEmailAndPassword(auth, email, password);
+    return await processOAuthUser(result.user);
+  } catch (error) {
+    console.error('Error signing in with email:', error);
+    
+    let errorMessage = 'Ошибка входа';
+    
+    if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+      errorMessage = 'Неверный email или пароль';
+    } else if (error.code === 'auth/invalid-email') {
+      errorMessage = 'Неверный формат email';
+    } else if (error.code === 'auth/user-disabled') {
+      errorMessage = 'Аккаунт заблокирован';
+    }
+    
+    throw new Error(errorMessage);
+  }
+};
+
+// Register with Email and Password
+export const registerWithEmail = async (email, password, displayName) => {
+  try {
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    
+    // Создаем профиль пользователя
+    const userData = {
+      uid: result.user.uid,
+      email: result.user.email,
+      displayName: displayName,
+      photoURL: '',
+      role: 'student',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    const userRef = doc(db, 'users', result.user.uid);
+    await setDoc(userRef, userData);
+    
+    return { user: result.user, userData };
+  } catch (error) {
+    console.error('Error registering with email:', error);
+    
+    let errorMessage = 'Ошибка регистрации';
+    
+    if (error.code === 'auth/email-already-in-use') {
+      errorMessage = 'Email уже зарегистрирован';
+    } else if (error.code === 'auth/invalid-email') {
+      errorMessage = 'Неверный формат email';
+    } else if (error.code === 'auth/weak-password') {
+      errorMessage = 'Слишком простой пароль';
     }
     
     throw new Error(errorMessage);

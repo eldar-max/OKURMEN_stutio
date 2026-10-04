@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaLock, FaUser, FaEye, FaEyeSlash, FaArrowLeft, FaGoogle, FaGithub, FaTimes, FaEnvelope } from 'react-icons/fa';
-import { signInWithGoogle, signInWithGithub, resetPassword } from '../services/firebase';
+import { signInWithGoogle, signInWithGithub, resetPassword, signInWithEmail } from '../services/firebase';
 import logo from '../assets/5309874850258165398_121.jpg';
 import Loader from '../components/Loader';
 import { generateAndSendAdminCode } from '../services/adminCode';
@@ -120,27 +120,59 @@ function Login() {
     setError('');
     setLoading(true);
 
-    // Проверка зарегистрированных пользователей
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find(u => u.username === formData.username && u.password === formData.password);
+    try {
+      // Сначала проверяем LocalStorage (для старых пользователей)
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const localUser = users.find(u => u.username === formData.username && u.password === formData.password);
 
-    if (user) {
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('userRole', user.role);
-      localStorage.setItem('username', user.username);
-      localStorage.setItem('userId', user.id);
-      localStorage.setItem('userFullName', user.fullName);
-      
-      // Отправляем событие для обновления Navbar
-      window.dispatchEvent(new Event('authChange'));
-      
-      if (user.role === 'student') {
-        navigate('/student');
-      } else if (user.role === 'teacher') {
-        navigate('/teacher');
+      if (localUser) {
+        // Вход через LocalStorage
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userRole', localUser.role);
+        localStorage.setItem('username', localUser.username);
+        localStorage.setItem('userId', localUser.id);
+        localStorage.setItem('userFullName', localUser.fullName);
+        
+        // Отправляем событие для обновления Navbar
+        window.dispatchEvent(new Event('authChange'));
+        
+        if (localUser.role === 'student') {
+          navigate('/student');
+        } else if (localUser.role === 'teacher') {
+          navigate('/teacher');
+        }
+      } else {
+        // Пробуем войти через Firebase (для пользователей с Google/GitHub OAuth и сброшенным паролем)
+        try {
+          const { user, userData } = await signInWithEmail(formData.username, formData.password);
+          
+          // Сохраняем данные в localStorage
+          localStorage.setItem('isAuthenticated', 'true');
+          localStorage.setItem('userRole', userData?.role || 'student');
+          localStorage.setItem('username', user.displayName || user.email);
+          localStorage.setItem('userId', user.uid);
+          localStorage.setItem('userFullName', user.displayName || '');
+          localStorage.setItem('userEmail', user.email);
+          localStorage.setItem('userPhoto', user.photoURL || '');
+
+          // Отправляем событие для обновления Navbar
+          window.dispatchEvent(new Event('authChange'));
+
+          // Перенаправляем в зависимости от роли
+          const role = userData?.role || 'student';
+          if (role === 'student') {
+            navigate('/student');
+          } else if (role === 'teacher') {
+            navigate('/teacher');
+          }
+        } catch (firebaseError) {
+          // Если и Firebase не сработал - показываем ошибку
+          setError(t('invalidCredentials'));
+        }
       }
-    } else {
+    } catch (err) {
       setError(t('invalidCredentials'));
+    } finally {
       setLoading(false);
     }
   };
@@ -173,7 +205,7 @@ function Login() {
 
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Username */}
+          {/* Username/Email */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               {t('usernameOrEmail')}
@@ -187,7 +219,7 @@ function Login() {
                 value={formData.username}
                 onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                placeholder="username"
+                placeholder="username или email@example.com"
                 required
               />
             </div>
