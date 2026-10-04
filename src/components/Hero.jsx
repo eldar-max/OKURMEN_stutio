@@ -19,16 +19,22 @@ function Hero() {
       name: 'Бактыбек А.',
       role: 'IT Ментор',
       photo: teacher1,
+      borderColor: 'border-yellow-400',
+      bgColor: 'bg-yellow-400',
     },
     {
       name: 'Айлери К.',
       role: 'Контент Менеджер',
       photo: teacher2,
+      borderColor: 'border-amber-600',
+      bgColor: 'bg-amber-600',
     },
     {
       name: 'Нурлан Т.',
       role: 'Маркетолог',
       photo: teacher3,
+      borderColor: 'border-slate-700',
+      bgColor: 'bg-slate-700',
     },
   ];
 
@@ -147,7 +153,7 @@ function Hero() {
             transition={{ duration: 0.8 }}
             className="relative hidden md:block"
           >
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               {teachers.map((teacher, index) => (
                 <motion.div
                   key={index}
@@ -155,18 +161,24 @@ function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 + index * 0.1, duration: 0.6 }}
                   whileHover={{ y: -10, scale: 1.05 }}
-                  className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all"
+                  className={`${teacher.bgColor} p-2 rounded-3xl shadow-xl hover:shadow-2xl transition-all ${
+                    index === 0 ? 'col-span-1 row-span-1' : 
+                    index === 1 ? 'col-span-1 row-span-2' : 
+                    'col-span-1 row-span-1'
+                  }`}
                 >
-                  <div className="aspect-[3/4] overflow-hidden">
-                    <img 
-                      src={teacher.photo} 
-                      alt={teacher.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="p-4 text-center">
-                    <h3 className="text-lg font-bold text-gray-800 mb-1">{teacher.name}</h3>
-                    <p className="text-sm text-gray-600">{teacher.role}</p>
+                  <div className={`bg-white rounded-2xl overflow-hidden h-full`}>
+                    <div className={`${index === 1 ? 'aspect-[3/5]' : 'aspect-square'} overflow-hidden`}>
+                      <img 
+                        src={teacher.photo} 
+                        alt={teacher.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="p-3 text-center">
+                      <h3 className="text-base font-bold text-gray-800 mb-1">{teacher.name}</h3>
+                      <p className="text-sm text-gray-600">{teacher.role}</p>
+                    </div>
                   </div>
                 </motion.div>
               ))}
