@@ -111,7 +111,7 @@ function Navbar() {
     { name: t('contacts'), href: '#contact' },
   ];
 
-  const aiChatText = language === 'kg' ? 'AI Чат' : language === 'en' ? 'AI Chat' : 'AI Чат';
+  const aiChatText = language === 'kg' ? 'ИИ Чат' : language === 'en' ? 'AI Chat' : 'ИИ Чат';
 
   return (
     <motion.nav
@@ -156,10 +156,9 @@ function Navbar() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black rounded-full font-semibold shadow-lg hover:shadow-yellow-500/50 transition-all flex items-center space-x-2"
+                className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black rounded-full font-semibold shadow-lg hover:shadow-yellow-500/50 transition-all"
               >
-                <span className="text-xl">🤖</span>
-                <span>{aiChatText}</span>
+                {aiChatText}
               </motion.button>
             </Link>
             
