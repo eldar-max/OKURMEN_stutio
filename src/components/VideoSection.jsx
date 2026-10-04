@@ -70,28 +70,30 @@ function VideoSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
 
                 {/* Play Button */}
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => setIsPlaying(true)}
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group"
-                >
-                  <motion.div
-                    animate={{ 
-                      scale: [1, 1.2, 1],
-                    }}
-                    transition={{ 
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                    className="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-2xl group-hover:shadow-3xl transition-shadow"
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setIsPlaying(true)}
+                    className="relative group"
                   >
-                    <FaPlay className="text-3xl text-white ml-1" />
-                  </motion.div>
-                  
-                  <div className="absolute inset-0 bg-white/20 rounded-full animate-ping"></div>
-                </motion.button>
+                    <motion.div
+                      animate={{ 
+                        scale: [1, 1.2, 1],
+                      }}
+                      transition={{ 
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                      className="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-2xl group-hover:shadow-3xl transition-shadow"
+                    >
+                      <FaPlay className="text-3xl text-white ml-1" />
+                    </motion.div>
+                    
+                    <div className="absolute inset-0 bg-white/20 rounded-full animate-ping"></div>
+                  </motion.button>
+                </div>
 
                 {/* Info Overlay */}
                 <div className="absolute bottom-8 left-8 right-8">
