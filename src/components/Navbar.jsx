@@ -128,7 +128,7 @@ function Navbar() {
           {/* Logo */}
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="flex items-center space-x-2"
+            className="flex items-center space-x-2 flex-shrink-0"
           >
             <WinkingLogo isWinking={isWinking} onClick={handleLogoClick} />
             <span className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">
@@ -137,26 +137,26 @@ function Navbar() {
           </motion.div>
 
           {/* Desktop Menu - Center */}
-          <div className="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">
+          <div className="hidden lg:flex items-center space-x-6 flex-1 justify-center">
             {menuItems.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className="text-gray-800 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors font-medium whitespace-nowrap"
+                className="text-gray-800 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors font-medium whitespace-nowrap text-sm"
               >
                 {item.name}
               </a>
             ))}
           </div>
 
-          {/* CTA Button - Right */}
-          <div className="hidden md:flex items-center space-x-2 lg:space-x-3">
+          {/* Right Side Buttons */}
+          <div className="hidden md:flex items-center space-x-3 flex-shrink-0">
             {/* AI Chat Button */}
             <Link to="/ai-chat">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black rounded-full font-semibold shadow-lg hover:shadow-yellow-500/50 transition-all"
+                className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black rounded-full font-semibold shadow-lg hover:shadow-yellow-500/50 transition-all text-sm whitespace-nowrap"
               >
                 {aiChatText}
               </motion.button>
@@ -170,13 +170,13 @@ function Navbar() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={toggleTheme}
-              className="p-1.5 lg:p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex-shrink-0"
               aria-label="Toggle theme"
             >
               {theme === 'light' ? (
-                <FaMoon className="text-base lg:text-xl text-gray-700 dark:text-gray-300" />
+                <FaMoon className="text-xl text-gray-700 dark:text-gray-300" />
               ) : (
-                <FaSun className="text-base lg:text-xl text-yellow-500" />
+                <FaSun className="text-xl text-yellow-500" />
               )}
             </motion.button>
 
