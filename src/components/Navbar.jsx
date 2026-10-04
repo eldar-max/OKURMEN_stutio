@@ -147,21 +147,18 @@ function Navbar() {
                 {item.name}
               </a>
             ))}
+            
+            {/* AI Chat Link */}
+            <Link 
+              to="/ai-chat"
+              className="text-gray-800 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors font-medium whitespace-nowrap text-sm"
+            >
+              {aiChatText}
+            </Link>
           </div>
 
           {/* Right Side Buttons */}
           <div className="hidden md:flex items-center space-x-3 flex-shrink-0">
-            {/* AI Chat Button */}
-            <Link to="/ai-chat">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black rounded-full font-semibold shadow-lg hover:shadow-yellow-500/50 transition-all text-sm whitespace-nowrap"
-              >
-                {aiChatText}
-              </motion.button>
-            </Link>
-            
             {/* Language Switcher */}
             <LanguageSwitcher />
             
