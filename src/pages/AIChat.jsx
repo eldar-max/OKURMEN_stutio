@@ -103,46 +103,60 @@ function AIChat() {
     };
 
     setMessages([...messages, userMessage]);
+    const currentInput = inputText;
     setInputText('');
     setIsTyping(true);
 
-    // Симуляция ответа AI
-    setTimeout(() => {
-      const botMessage = {
+    try {
+      // Вызываем Google Gemini AI
+      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyAfz3G_uBQkDePEYWaQgfuLZtSAgaCJOag', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `Ты вежливый и полезный помощник образовательной платформы ОКУРМЭН. Отвечай на ${language === 'kg' ? 'кыргызском' : language === 'en' ? 'английском' : 'русском'} языке. Вопрос: ${currentInput}`
+            }]
+          }],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 1000,
+          }
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+        const aiText = data.candidates[0].content.parts[0].text;
+        const botMessage = {
+          id: Date.now() + 1,
+          type: 'bot',
+          text: aiText,
+          time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+        };
+        setMessages(prev => [...prev, botMessage]);
+      } else {
+        throw new Error('Invalid response from AI');
+      }
+    } catch (error) {
+      console.error('AI Error:', error);
+      const errorMessage = {
         id: Date.now() + 1,
         type: 'bot',
-        text: generateAIResponse(inputText),
+        text: language === 'kg' 
+          ? 'Кечиресиз, AI менен байланышта ката кетти. Кайра аракет кылыңыз.'
+          : language === 'en'
+          ? 'Sorry, there was an error connecting to AI. Please try again.'
+          : 'Извините, произошла ошибка соединения с AI. Попробуйте снова.',
         time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
       };
-      setMessages(prev => [...prev, botMessage]);
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
-  };
-
-  const generateAIResponse = (question) => {
-    const responses = {
-      kg: [
-        'Бул кызыктуу суроо! Мен сизге жардам берүүгө даярмын.',
-        'Түшүндүм! Бул тема боюнча көбүрөөк маалымат бере алам.',
-        'Жакшы суроо! Келиңиз, муну толук карап көрөлү.',
-        'Мен сизге бул маселе боюнча жардам бере алам.'
-      ],
-      en: [
-        'That\'s an interesting question! I\'m ready to help you.',
-        'I understand! I can provide more information on this topic.',
-        'Great question! Let\'s explore this in detail.',
-        'I can help you with this matter.'
-      ],
-      ru: [
-        'Это интересный вопрос! Я готов помочь вам.',
-        'Понял! Я могу предоставить больше информации по этой теме.',
-        'Отличный вопрос! Давайте рассмотрим это подробнее.',
-        'Я могу помочь вам с этим вопросом.'
-      ]
-    };
-
-    const langResponses = responses[language] || responses.ru;
-    return langResponses[Math.floor(Math.random() * langResponses.length)];
+    }
   };
 
   const handleQuickPrompt = (prompt) => {
