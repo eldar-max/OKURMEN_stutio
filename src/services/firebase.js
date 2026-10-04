@@ -76,40 +76,16 @@ export const signInWithGithub = async () => {
     
     return await processOAuthUser(result.user);
   } catch (error) {
-    // Если email уже используется другим провайдером - автоматически связываем
+    // Если email уже используется другим провайдером
     if (error.code === 'auth/account-exists-with-different-credential') {
       const email = error.customData?.email;
-      const pendingCredential = GithubAuthProvider.credentialFromError(error);
       
-      if (!email || !pendingCredential) {
-        throw error;
-      }
-      
-      // Получаем методы входа для этого email
-      const methods = await fetchSignInMethodsForEmail(auth, email);
-      
-      // Если есть Google провайдер, входим через Google и связываем
-      if (methods.includes('google.com')) {
-        try {
-          // Входим через Google
-          const googleResult = await signInWithPopup(auth, googleProvider);
-          
-          // Связываем GitHub credential с текущим аккаунтом
-          await linkWithCredential(googleResult.user, pendingCredential);
-          
-          // Возвращаем пользователя
-          return await processOAuthUser(googleResult.user);
-        } catch (linkError) {
-          console.error('Error linking accounts:', linkError);
-          throw new Error(
-            'КГ: Аккаунттарды байланыштыруу мүмкүн болбоду. Google менен кириңиз.\n' +
-            'RU: Не удалось связать аккаунты. Войдите через Google.\n' +
-            'EN: Failed to link accounts. Please sign in with Google.'
-          );
-        }
-      }
-      
-      throw error;
+      // Показываем понятное сообщение пользователю
+      throw new Error(
+        `КГ: Бул email (${email}) Google аркылуу катталган. Google менен кириңиз!\n\n` +
+        `RU: Этот email (${email}) уже зарегистрирован через Google. Войдите через Google!\n\n` +
+        `EN: This email (${email}) is already registered via Google. Please sign in with Google!`
+      );
     }
     
     console.error('Error signing in with GitHub:', error);
