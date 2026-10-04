@@ -108,8 +108,11 @@ function AIChat() {
     setIsTyping(true);
 
     try {
+      // Получаем API ключ из переменных окружения
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyAfz3G_uBQkDePEYWaQgfuLZtSAgaCJOag';
+      
       // Вызываем Google Gemini AI
-      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyAfz3G_uBQkDePEYWaQgfuLZtSAgaCJOag', {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
